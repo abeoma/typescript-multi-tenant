@@ -1,5 +1,9 @@
 {
   "name": "barasu",
   "version": "1.0.0",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "eslint": "^7.30.0",
+    "prettier": "^2.3.2"
+  }
 }
