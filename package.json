@@ -5,5 +5,8 @@
   "devDependencies": {
     "eslint": "^7.30.0",
     "prettier": "^2.3.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
