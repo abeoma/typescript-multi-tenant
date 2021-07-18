@@ -1,5 +1,19 @@
-version: '3.3'
+version: "3.3"
 services:
+  mysql:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    ports:
+      - "3326:3306"
+    volumes:
+      - ./docker/volumes/mysql/initdb.d:/docker-entrypoint-initdb.d:delegated
+      - ./docker/volumes/localtime:/etc/localtime:delegated
+      - ./docker/volumes/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:delegated
+      - ./docker/volumes/mysql/tmp:/tmp:delegated
+    env_file:
+      - ./docker/envs/mysql.env
+
   app:
     build:
       context: .
@@ -8,6 +22,8 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - '5000:5000'
+      - "5000:5000"
     volumes:
       - .:/app
+    depends_on:
+      - mysql
