@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node -P config/tsconfig.server.json server/app.ts"
+    "start:server": "ts-node server/app.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
