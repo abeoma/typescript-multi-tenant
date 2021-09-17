@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as _ from "react";
 import * as ReactDOM from "react-dom";
 
 const Index = () => <div>Hello React!</div>;
