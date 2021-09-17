@@ -1,5 +1,5 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const path = require("path");
+import HtmlWebPackPlugin from "html-webpack-plugin";
+import path from "path";
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
   template: "./frontend/index.html",
