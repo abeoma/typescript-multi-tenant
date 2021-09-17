@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start:server": "nodemon --exec ts-node server/app.ts",
     "start:frontend": "webpack serve --config ./frontend/config/webpack.config.ts --open --mode development",
     "build:frontend": "webpack --config ./frontend/config/webpack.config.ts --mode production",
+    "start:server": "nodemon --exec ts-node server/app.ts",
+    "gen:model": "ts-node node_modules/.bin/typeorm entity:create -f server/config/ormconfig.ts",
+    "gen:migration": "ts-node -P server/tsconfig.json node_modules/.bin/typeorm migration:generate -f server/config/ormconfig.ts",
+    "run:migration": "ts-node -P server/tsconfig.json node_modules/.bin/typeorm migration:run -f server/config/ormconfig.ts",
+    "revert:migration": "ts-node -P server/tsconfig.json node_modules/.bin/typeorm migration:revert -f server/config/ormconfig.ts",
+    "show:migration": "ts-node -P server/tsconfig.json node_modules/.bin/typeorm migration:show -f server/config/ormconfig.ts",
     "eslint:check": "npx eslint . --ext .js,.jsx,.ts,.tsx",
     "eslint:fix": "npx eslint --fix",
     "format:check": "prettier --check './**/*.{ts,tsx}'",
@@ -14,6 +19,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/mysql2": "types/mysql2",
     "@types/node": "^16.3.3",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
@@ -45,7 +51,10 @@
   "dependencies": {
     "express": "^4.17.1",
     "html-webpack-plugin": "^5.3.2",
+    "mysql2": "^2.2.5",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.37"
   }
 }
