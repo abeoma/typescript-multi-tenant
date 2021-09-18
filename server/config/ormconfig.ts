@@ -1,5 +1,12 @@
 import { ConnectionOptions, DefaultNamingStrategy } from "typeorm";
 import { snakeCase } from "typeorm/util/StringUtils";
+import {
+  ADMIN_DB_HOST,
+  ADMIN_DB_NAME,
+  ADMIN_DB_PASS,
+  ADMIN_DB_PORT,
+  ADMIN_DB_USER,
+} from "../defs";
 
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -43,19 +50,29 @@ const baseConfig: { type: "mysql" } & Record<
   string | boolean | CustomNamingStrategy
 > = {
   type: "mysql",
+  charset: "utf8mb4",
   synchronize: false,
   logging: false,
   namingStrategy: new CustomNamingStrategy(),
 };
 
-const adminOrmconfig: ConnectionOptions = {
+const defaultOrmConfig: ConnectionOptions = {
   ...baseConfig,
   name: "default",
-  host: process.env.ADMIN_DB_HOST,
-  port: parseInt(process.env.ADMIN_DB_PORT || "0", 10),
-  username: process.env.ADMIN_DB_USER,
-  password: process.env.ADMIN_DB_PASS,
-  database: process.env.ADMIN_DB_NAME,
+  host: ADMIN_DB_HOST,
+  port: ADMIN_DB_PORT,
+  username: ADMIN_DB_USER,
+  password: ADMIN_DB_PASS,
+};
+
+const adminOrmConfig: ConnectionOptions = {
+  ...baseConfig,
+  name: "admin",
+  host: ADMIN_DB_HOST,
+  port: ADMIN_DB_PORT,
+  username: ADMIN_DB_USER,
+  password: ADMIN_DB_PASS,
+  database: ADMIN_DB_NAME,
   entities: ["server/models/admin/**/*.ts"],
   migrations: ["server/migrations/admin/**/*.ts"],
   subscribers: ["server/subscribers/admin/**/*.ts"],
@@ -66,14 +83,13 @@ const adminOrmconfig: ConnectionOptions = {
   },
 };
 
-const tenantOrmconfig: ConnectionOptions = {
+const tenantOrmConfig: ConnectionOptions = {
   ...baseConfig,
   name: "tenant",
-  host: process.env.APP_DB_HOST,
-  port: parseInt(process.env.APP_DB_PORT || "0", 10),
-  username: process.env.APP_DB_USER,
-  password: process.env.APP_DB_PASS,
-  database: process.env.APP_DB_NAME,
+  host: ADMIN_DB_HOST,
+  port: ADMIN_DB_PORT,
+  username: ADMIN_DB_USER,
+  password: ADMIN_DB_PASS,
   entities: ["server/models/tenant/**/*.ts"],
   migrations: ["server/migrations/tenant/**/*.ts"],
   subscribers: ["server/subscribers/tenant/**/*.ts"],
@@ -84,4 +100,4 @@ const tenantOrmconfig: ConnectionOptions = {
   },
 };
 
-export default [adminOrmconfig, tenantOrmconfig];
+export default [defaultOrmConfig, adminOrmConfig, tenantOrmConfig];
