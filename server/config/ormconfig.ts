@@ -83,7 +83,7 @@ const adminOrmConfig: ConnectionOptions = {
   },
 };
 
-const tenantOrmConfig: ConnectionOptions = {
+const baseTenantOrmConfig = {
   ...baseConfig,
   name: "tenant",
   host: ADMIN_DB_HOST,
@@ -100,4 +100,14 @@ const tenantOrmConfig: ConnectionOptions = {
   },
 };
 
-export default [defaultOrmConfig, adminOrmConfig, tenantOrmConfig];
+export function tenantIdToDatabaseName(id: string) {
+  return `tenant_${id}`;
+}
+export function createTenantOrmConfig(id: string): ConnectionOptions {
+  return {
+    ...baseTenantOrmConfig,
+    database: tenantIdToDatabaseName(id),
+  };
+}
+
+export default [defaultOrmConfig, adminOrmConfig, baseTenantOrmConfig];

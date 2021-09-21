@@ -17,6 +17,8 @@ RUN yarn install
 
 COPY ./server ${APP_ROOT}/
 
+# ENV
+ENV DEV_TENANT_ID=barasu-dev
 
 # BOOTSTRAP
 ARG BOOTSTRAP
