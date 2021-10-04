@@ -1,5 +1,10 @@
 import yargs, { Arguments, Options } from "yargs";
-import { createTenant, resetAll, setupDevTenant } from "./migrate";
+import {
+  createTenant,
+  migrateAdmin,
+  resetAll,
+  setupDevTenant,
+} from "./migrate";
 import { assertIsString } from "../../lib/asserts";
 
 type Command = {
@@ -10,6 +15,13 @@ type Command = {
 };
 
 const commands: Command[] = [
+  {
+    name: "migrate-all",
+    handler: async () => {
+      await migrateAdmin();
+      // async migrateTenants();
+    },
+  },
   {
     name: "create-tenant",
     options: {
@@ -24,7 +36,7 @@ const commands: Command[] = [
       createTenant(args.tenantId);
     },
   },
-  { name: "reset-all", handler: () => resetAll() },
+  { name: "reset-all", handler: async () => await resetAll() },
   {
     name: "setup-dev-tenant",
     options: {

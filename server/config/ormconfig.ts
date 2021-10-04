@@ -100,13 +100,13 @@ const baseTenantOrmConfig = {
   },
 };
 
-export function tenantIdToDatabaseName(id: string) {
+export function tenantIdToDbName(id: string) {
   return `tenant_${id}`;
 }
 export function createTenantOrmConfig(id: string): ConnectionOptions {
   return {
     ...baseTenantOrmConfig,
-    database: tenantIdToDatabaseName(id),
+    database: tenantIdToDbName(id),
   };
 }
 
