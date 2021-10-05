@@ -5,7 +5,7 @@ import {
   createConnection,
   QueryRunner,
 } from "typeorm";
-// import { AdminRegistry } from "../admin_repo/admin_registry";
+import { AdminRegistry } from "../admin_repo/admin_registry";
 import configs, { tenantIdToDbName } from "../config/ormconfig";
 import { ADMIN_DB_NAME } from "../defs";
 
@@ -25,7 +25,7 @@ async function withConnection(
 
 async function withQueryRunner(
   conn: Connection,
-  handler: (queryRunner: QueryRunner) => void
+  handler: (queryRunner: QueryRunner) => Promise<void>
 ) {
   const queryRunner = conn.createQueryRunner();
   try {
@@ -52,8 +52,8 @@ export function migrateAdminRollback(): void {
 
 export async function createAdminDatabaseIfNotExists(): Promise<void> {
   await withConnection(defaultConfig, async (conn) => {
-    await withQueryRunner(conn, async (query) => {
-      await query.createDatabase(ADMIN_DB_NAME, true);
+    await withQueryRunner(conn, async (runner) => {
+      await runner.createDatabase(ADMIN_DB_NAME, true);
     });
   });
   await migrateAdmin();
@@ -69,35 +69,43 @@ function validateTenantId(id: string) {
 export async function createTenant(id: string): Promise<void> {
   validateTenantId(id);
   withConnection(adminConfig, async (conn) => {
-    // await new AdminRegistry(conn).create(id);
+    await new AdminRegistry(conn).create(id);
     await withQueryRunner(
       conn,
-      async (query) => await query.createDatabase(tenantIdToDbName(id))
+      async (runner) => await runner.createDatabase(tenantIdToDbName(id))
     );
   });
-  // TODO: create and migrate tenant db
+  // TODO: migrate tenant db
 }
 
 export async function setupDevTenant(id: string): Promise<void> {
   validateTenantId(id);
   await createAdminDatabaseIfNotExists();
   await withConnection(defaultConfig, async (conn) => {
-    await withQueryRunner(conn, async (query) => {
-      await query.dropDatabase(tenantIdToDbName(id), true);
+    await withQueryRunner(conn, async (runner) => {
+      await runner.dropDatabase(tenantIdToDbName(id), true);
     });
   });
   await createTenant(id);
 }
 
 export async function resetAll(): Promise<void> {
-  try {
-    // delete all tenant db
-  } finally {
-    await withConnection(defaultConfig, async (conn) => {
-      await withQueryRunner(conn, async (query) => {
-        await query.dropDatabase(ADMIN_DB_NAME, true);
+  async function dropAll() {
+    await withConnection(adminConfig, async (conn) => {
+      const tenants = await new AdminRegistry(conn).fetchAll();
+      await withQueryRunner(conn, async (runner) => {
+        tenants.forEach((t) => runner.dropDatabase(tenantIdToDbName(t.id)));
       });
+      await conn.dropDatabase();
     });
-    await createAdminDatabaseIfNotExists();
   }
+
+  await withConnection(defaultConfig, async (conn) => {
+    await withQueryRunner(conn, async (runner) => {
+      if (await runner.hasDatabase(ADMIN_DB_NAME)) {
+        dropAll();
+      }
+    });
+  });
+  await createAdminDatabaseIfNotExists();
 }
