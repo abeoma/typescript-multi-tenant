@@ -6,7 +6,10 @@ import {
   QueryRunner,
 } from "typeorm";
 import { AdminRegistry } from "../admin_repo/admin_registry";
-import configs, { tenantIdToDbName } from "../config/ormconfig";
+import configs, {
+  createTenantOrmConfig,
+  tenantIdToDbName,
+} from "../config/ormconfig";
 import { ADMIN_DB_NAME } from "../defs";
 
 const [defaultConfig, adminConfig, _] = configs;
@@ -68,14 +71,17 @@ function validateTenantId(id: string) {
 
 export async function createTenant(id: string): Promise<void> {
   validateTenantId(id);
-  withConnection(adminConfig, async (conn) => {
+  await withConnection(adminConfig, async (conn) => {
     await new AdminRegistry(conn).create(id);
     await withQueryRunner(
       conn,
       async (runner) => await runner.createDatabase(tenantIdToDbName(id))
     );
   });
-  // TODO: migrate tenant db
+  const config = createTenantOrmConfig(id);
+  await withConnection(config, async (conn) => {
+    await conn.runMigrations();
+  });
 }
 
 export async function setupDevTenant(id: string): Promise<void> {
@@ -93,9 +99,13 @@ export async function resetAll(): Promise<void> {
   async function dropAll() {
     await withConnection(adminConfig, async (conn) => {
       const tenants = await new AdminRegistry(conn).fetchAll();
-      await withQueryRunner(conn, async (runner) => {
-        tenants.forEach((t) => runner.dropDatabase(tenantIdToDbName(t.id)));
-      });
+      await Promise.all(
+        tenants.map((t) =>
+          withQueryRunner(conn, async (runner) => {
+            runner.dropDatabase(tenantIdToDbName(t.id));
+          })
+        )
+      );
       await conn.dropDatabase();
     });
   }
@@ -103,7 +113,7 @@ export async function resetAll(): Promise<void> {
   await withConnection(defaultConfig, async (conn) => {
     await withQueryRunner(conn, async (runner) => {
       if (await runner.hasDatabase(ADMIN_DB_NAME)) {
-        dropAll();
+        await dropAll();
       }
     });
   });

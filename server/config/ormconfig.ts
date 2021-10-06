@@ -47,31 +47,27 @@ export class CustomNamingStrategy extends DefaultNamingStrategy {
 
 const baseConfig: { type: "mysql" } & Record<
   string,
-  string | boolean | CustomNamingStrategy
+  string | number | boolean | CustomNamingStrategy
 > = {
   type: "mysql",
   charset: "utf8mb4",
   synchronize: false,
-  logging: false,
+  logging: "all",
   namingStrategy: new CustomNamingStrategy(),
+  host: ADMIN_DB_HOST,
+  port: ADMIN_DB_PORT,
+  username: ADMIN_DB_USER,
+  password: ADMIN_DB_PASS,
 };
 
 const defaultOrmConfig: ConnectionOptions = {
   ...baseConfig,
   name: "default",
-  host: ADMIN_DB_HOST,
-  port: ADMIN_DB_PORT,
-  username: ADMIN_DB_USER,
-  password: ADMIN_DB_PASS,
 };
 
 const adminOrmConfig: ConnectionOptions = {
   ...baseConfig,
   name: "admin",
-  host: ADMIN_DB_HOST,
-  port: ADMIN_DB_PORT,
-  username: ADMIN_DB_USER,
-  password: ADMIN_DB_PASS,
   database: ADMIN_DB_NAME,
   entities: ["server/models/admin/**/*.ts"],
   migrations: ["server/migrations/admin/**/*.ts"],
@@ -86,10 +82,6 @@ const adminOrmConfig: ConnectionOptions = {
 const baseTenantOrmConfig = {
   ...baseConfig,
   name: "tenant",
-  host: ADMIN_DB_HOST,
-  port: ADMIN_DB_PORT,
-  username: ADMIN_DB_USER,
-  password: ADMIN_DB_PASS,
   entities: ["server/models/tenant/**/*.ts"],
   migrations: ["server/migrations/tenant/**/*.ts"],
   subscribers: ["server/subscribers/tenant/**/*.ts"],
@@ -98,6 +90,12 @@ const baseTenantOrmConfig = {
     migrationsDir: "server/migrations/tenant",
     subscribersDir: "server/subscribers/tenant",
   },
+};
+
+// only for `typeorm migration:generate`
+const devTenantOrmConfig = {
+  ...baseTenantOrmConfig,
+  database: tenantIdToDbName(process.env.DEV_TENANT_ID || ""),
 };
 
 export function tenantIdToDbName(id: string) {
@@ -110,4 +108,4 @@ export function createTenantOrmConfig(id: string): ConnectionOptions {
   };
 }
 
-export default [defaultOrmConfig, adminOrmConfig, baseTenantOrmConfig];
+export default [defaultOrmConfig, adminOrmConfig, devTenantOrmConfig];
