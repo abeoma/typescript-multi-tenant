@@ -1,7 +1,11 @@
-export interface IGuardResult {
-  succeeded: boolean;
-  message?: string;
-}
+export type IGuardResult =
+  | {
+      succeeded: true;
+    }
+  | {
+      succeeded: false;
+      message: string;
+    };
 
 export interface IGuardArgument {
   argument: unknown;
@@ -46,6 +50,15 @@ export class Guard {
       : {
           succeeded: false,
           message: `Text is greater than ${numChars} chars.`,
+        };
+  }
+
+  public static againstRegex(pattern: RegExp, text: string): IGuardResult {
+    return pattern.test(text)
+      ? { succeeded: true }
+      : {
+          succeeded: false,
+          message: `Text should match "${pattern}", but ${text}.`,
         };
   }
 
