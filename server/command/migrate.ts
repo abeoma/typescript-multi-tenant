@@ -5,12 +5,12 @@ import {
   createConnection,
   QueryRunner,
 } from "typeorm";
-import { AdminRegistry } from "../admin_repo/admin_registry";
 import configs, {
   createTenantOrmConfig,
   tenantIdToDbName,
-} from "../config/ormconfig";
+} from "../infra/database/typeorm/ormconfig";
 import { ADMIN_DB_NAME } from "../defs";
+import { AdminRegistry } from "../infra/database/typeorm/adminRepos/adminRegistry";
 
 const [defaultConfig, adminConfig, _] = configs;
 
@@ -72,7 +72,7 @@ function validateTenantId(id: string) {
 export async function createTenant(id: string): Promise<void> {
   validateTenantId(id);
   await withConnection(adminConfig, async (conn) => {
-    await new AdminRegistry(conn).create(id);
+    await new AdminRegistry(conn).createTenant(id);
     await withQueryRunner(
       conn,
       async (runner) => await runner.createDatabase(tenantIdToDbName(id))
@@ -99,10 +99,11 @@ export async function resetAll(): Promise<void> {
   async function dropAll() {
     await withConnection(adminConfig, async (conn) => {
       const tenants = await new AdminRegistry(conn).fetchAll();
+      const tenantIds = tenants.map((t) => t.id.value.toString());
       await Promise.all(
-        tenants.map((t) =>
+        tenantIds.map((tid) =>
           withQueryRunner(conn, async (runner) => {
-            runner.dropDatabase(tenantIdToDbName(t.id));
+            runner.dropDatabase(tenantIdToDbName(tid));
           })
         )
       );

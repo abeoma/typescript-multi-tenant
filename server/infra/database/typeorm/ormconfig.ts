@@ -1,3 +1,4 @@
+import path from "path";
 import { ConnectionOptions, DefaultNamingStrategy } from "typeorm";
 import { snakeCase } from "typeorm/util/StringUtils";
 import {
@@ -6,7 +7,10 @@ import {
   ADMIN_DB_PASS,
   ADMIN_DB_PORT,
   ADMIN_DB_USER,
-} from "../defs";
+} from "../../../defs";
+
+const migrationPath = (p: string) => path.join(__dirname, "migrations", p);
+const modelPath = (p: string) => path.join(__dirname, "models", p);
 
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -69,26 +73,22 @@ const adminOrmConfig: ConnectionOptions = {
   ...baseConfig,
   name: "admin",
   database: ADMIN_DB_NAME,
-  entities: ["server/models/admin/**/*.ts"],
-  migrations: ["server/migrations/admin/**/*.ts"],
-  subscribers: ["server/subscribers/admin/**/*.ts"],
+  entities: [modelPath("admin/**/*.ts")],
+  migrations: [migrationPath("admin/**/*.ts")],
   cli: {
-    entitiesDir: "server/models/admin",
-    migrationsDir: "server/migrations/admin",
-    subscribersDir: "server/subscribers/admin",
+    entitiesDir: modelPath("admin"),
+    migrationsDir: migrationPath("admin"),
   },
 };
 
 const baseTenantOrmConfig = {
   ...baseConfig,
   name: "tenant",
-  entities: ["server/models/tenant/**/*.ts"],
-  migrations: ["server/migrations/tenant/**/*.ts"],
-  subscribers: ["server/subscribers/tenant/**/*.ts"],
+  entities: [modelPath("tenant/**/*.ts")],
+  migrations: [migrationPath("tenant/**/*.ts")],
   cli: {
-    entitiesDir: "server/models/tenant",
-    migrationsDir: "server/migrations/tenant",
-    subscribersDir: "server/subscribers/tenant",
+    entitiesDir: modelPath("tenant"),
+    migrationsDir: migrationPath("tenant"),
   },
 };
 
