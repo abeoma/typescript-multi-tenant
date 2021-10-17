@@ -1,5 +1,5 @@
+import { UserModel } from "../infra/database/typeorm/models/tenant/user";
 import { Connection } from "typeorm";
-import { UserModel } from "../infra/database/typeorm/models/tenant/User";
 import { choice, range } from "../lib/helpers";
 import { v4 as uuidv4 } from "uuid";
 

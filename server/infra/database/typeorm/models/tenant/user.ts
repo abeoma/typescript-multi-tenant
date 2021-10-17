@@ -23,9 +23,9 @@ export class UserModel {
   @Column({ nullable: false })
   isActive!: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp" })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp" })
   updatedAt!: Date;
 }

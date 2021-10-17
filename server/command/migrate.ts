@@ -1,3 +1,4 @@
+import { TenantModel } from "./../infra/database/typeorm/models/admin/tenant";
 import { tenantIdToDbName } from "../infra/database/typeorm/ormconfig";
 import { ADMIN_DB_NAME } from "../defs";
 import { AdminRegistry } from "../infra/database/typeorm/adminRepos/adminRegistry";
@@ -58,6 +59,12 @@ export async function createTenant({
 export async function setupDevTenant(id: string): Promise<void> {
   await createAdminDatabaseIfNotExists();
   await withConnection(async (conn) => {
+    await conn
+      .createQueryBuilder()
+      .delete()
+      .from(TenantModel)
+      .where(id)
+      .execute();
     await withQueryRunner(conn, async (runner) => {
       await runner.dropDatabase(tenantIdToDbName(id), true);
     });

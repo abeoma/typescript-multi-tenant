@@ -99,7 +99,7 @@ const devTenantOrmConfig = {
 };
 
 export function tenantIdToDbName(id: string) {
-  return `tenant_${id}`;
+  return `t_${id}`;
 }
 export function createTenantOrmConfig(id: string): ConnectionOptions {
   return {

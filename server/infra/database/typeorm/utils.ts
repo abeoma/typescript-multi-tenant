@@ -56,7 +56,8 @@ export async function withQueryRunner(
   const queryRunner = conn.createQueryRunner();
   try {
     await handler(queryRunner);
-  } finally {
-    await queryRunner.release();
+  } catch (e) {
+    console.log(e);
   }
+  await queryRunner.release();
 }

@@ -1,5 +1,5 @@
 import { Connection, Repository } from "typeorm";
-import { TenantModel } from "../models/admin/Tenant";
+import { TenantModel } from "../models/admin/tenant";
 import { ITenantRepository } from "../../../../subdomains/tenants/repos/tenantRepository";
 import { TenantId } from "../../../../subdomains/tenants/domain/tenantId";
 import { Tenant } from "../../../../subdomains/tenants/domain/tenant";
