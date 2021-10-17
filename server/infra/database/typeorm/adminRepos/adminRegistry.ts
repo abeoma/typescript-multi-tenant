@@ -19,6 +19,11 @@ export class AdminRegistry {
     await this.repo.save(tenant);
   }
 
+  async fetchById(id: string): Promise<Tenant> {
+    const tenant = TenantMap.toDomain({ id });
+    return this.repo.fetchById(tenant.id);
+  }
+
   async fetchAll(): Promise<Tenant[]> {
     return await this.repo.fetchAll();
   }

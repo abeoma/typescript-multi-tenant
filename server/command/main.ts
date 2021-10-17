@@ -33,7 +33,7 @@ const commands: Command[] = [
     },
     handler: (args) => {
       assertIsString(args.tenantId);
-      createTenant(args.tenantId);
+      createTenant({ id: args.tenantId });
     },
   },
   { name: "reset-all", handler: async () => await resetAll() },

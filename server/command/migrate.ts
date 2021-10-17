@@ -1,8 +1,7 @@
-import assert from "assert";
 import { tenantIdToDbName } from "../infra/database/typeorm/ormconfig";
 import { ADMIN_DB_NAME } from "../defs";
 import { AdminRegistry } from "../infra/database/typeorm/adminRepos/adminRegistry";
-import { importSeed } from "./seed";
+import { SeedImporter } from "./seed";
 import {
   withAdminDbConnection,
   withConnection,
@@ -34,15 +33,13 @@ export async function createAdminDatabaseIfNotExists(): Promise<void> {
   await migrateAdmin();
 }
 
-function validateTenantId(id: string) {
-  assert(
-    /^[a-z0-9_-]{3,20}$/.test(id),
-    `TenantID should match "^[a-z0-9_-]{3,20}$", but ${id}`
-  );
-}
-
-export async function createTenant(id: string): Promise<void> {
-  validateTenantId(id);
+export async function createTenant({
+  id,
+  withSeed = false,
+}: {
+  id: string;
+  withSeed?: boolean;
+}): Promise<void> {
   await withAdminDbConnection(async (conn) => {
     await new AdminRegistry(conn).createTenant(id);
     await withQueryRunner(
@@ -52,19 +49,20 @@ export async function createTenant(id: string): Promise<void> {
   });
   await withTenantDbConnection(id, async (conn) => {
     await conn.runMigrations();
+    if (withSeed) {
+      await new SeedImporter(conn).runTenant();
+    }
   });
 }
 
 export async function setupDevTenant(id: string): Promise<void> {
-  validateTenantId(id);
   await createAdminDatabaseIfNotExists();
   await withConnection(async (conn) => {
     await withQueryRunner(conn, async (runner) => {
       await runner.dropDatabase(tenantIdToDbName(id), true);
     });
   });
-  await createTenant(id);
-  await withTenantDbConnection(id, async (conn) => await importSeed(conn));
+  await createTenant({ id, withSeed: true });
 }
 
 export async function resetAll(): Promise<void> {

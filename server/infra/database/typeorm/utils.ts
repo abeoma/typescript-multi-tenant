@@ -23,9 +23,8 @@ async function executeSafe(
     await handler(conn);
   } catch (e) {
     console.error(e);
-  } finally {
-    await conn.close();
   }
+  await conn.close();
 }
 
 export async function withConnection(

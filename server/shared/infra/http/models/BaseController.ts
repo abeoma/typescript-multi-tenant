@@ -1,24 +1,6 @@
 import * as express from "express";
 
 export abstract class BaseController {
-  protected abstract executeImpl(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void | unknown>;
-
-  public async execute(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
-    try {
-      await this.executeImpl(req, res);
-    } catch (err) {
-      console.log("[BaseController]: Uncaught controller error");
-      console.log(err);
-      this.fail(res, "An unexpected error occurred");
-    }
-  }
-
   public static jsonResponse(
     res: express.Response,
     code: number,
@@ -62,17 +44,6 @@ export abstract class BaseController {
     );
   }
 
-  public paymentRequired(
-    res: express.Response,
-    message?: string
-  ): express.Response {
-    return BaseController.jsonResponse(
-      res,
-      402,
-      message ? message : "Payment required"
-    );
-  }
-
   public forbidden(res: express.Response, message?: string): express.Response {
     return BaseController.jsonResponse(
       res,
@@ -103,10 +74,6 @@ export abstract class BaseController {
       429,
       message ? message : "Too many requests"
     );
-  }
-
-  public todo(res: express.Response): express.Response {
-    return BaseController.jsonResponse(res, 400, "TODO");
   }
 
   public fail(res: express.Response, error: Error | string): express.Response {

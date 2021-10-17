@@ -1,12 +1,13 @@
 import express from "express";
 import "reflect-metadata";
+import { tenantDispatcher } from "./infra/https/middlewares/tenantDispatcher";
+import { appRouter } from "./infra/https/routers/app";
 
 const app = express();
 const port = 5000;
 
-app.get("/", (req: express.Request, res: express.Response) => {
-  res.send("Hello World!");
-});
+app.use(tenantDispatcher);
+app.use("/api", appRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
