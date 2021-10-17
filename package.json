@@ -7,7 +7,7 @@
     "build:frontend": "webpack --config ./frontend/config/webpack.config.ts --mode production",
     "start:server": "nodemon --exec ts-node server/app.ts",
     "run:command": "ts-node -P server/tsconfig.json server/command/main.ts",
-    "typeorm": "ts-node -P server/tsconfig.json node_modules/.bin/typeorm -f server/config/ormconfig.ts",
+    "typeorm": "ts-node -P server/tsconfig.json node_modules/.bin/typeorm -f server/infra/database/typeorm/ormconfig.ts",
     "eslint:check": "npx eslint . --ext .js,.jsx,.ts,.tsx",
     "eslint:fix": "npx eslint --fix",
     "format:check": "prettier --check './**/*.{ts,tsx}'",
