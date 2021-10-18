@@ -4,7 +4,7 @@ import { UserEmail } from "../../../../subdomains/users/domain/userEmail";
 import { UserMap } from "./../../../../subdomains/users/mappers/userMap";
 import { Connection, Repository } from "typeorm";
 import { IUserRepository } from "../../../../subdomains/users/repositories/user";
-import { UserModel } from "../models/tenant/User";
+import { UserModel } from "../models/tenant/user";
 import assert from "assert";
 
 export class UserRepository implements IUserRepository {
