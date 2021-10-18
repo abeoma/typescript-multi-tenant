@@ -6,9 +6,10 @@
   "extends": [
     "eslint:recommended",
     "prettier",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
     // "plugin:jest/recommended",
   ],
   "parser": "@typescript-eslint/parser",
@@ -34,5 +35,8 @@
       { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
     ]
   },
-  "ignorePatterns": ["server/infra/database/typeorm/migrations/**/*"]
+  "ignorePatterns": [
+    "server/infra/database/typeorm/migrations/**/*",
+    "server/dist/"
+  ]
 }
