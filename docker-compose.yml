@@ -21,9 +21,20 @@ services:
     command: yarn start:server
     environment:
       NODE_ENV: development
+    env_file: ./docker/envs/app.env
     ports:
       - "5000:5000"
     volumes:
       - .:/app
     depends_on:
       - mysql
+
+  cli:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+    env_file: ./docker/envs/app.env
+    volumes:
+      - .:/app

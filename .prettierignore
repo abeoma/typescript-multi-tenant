@@ -1,0 +1,2 @@
+server/infra/database/typeorm/migrations/**/*.ts
+server/dist/
