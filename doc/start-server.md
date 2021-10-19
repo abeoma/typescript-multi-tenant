@@ -69,3 +69,27 @@ export class User... implements MigrationInterface {
 - query "SHOW DATABASES;"
 - migration:show
 - migration:revert
+
+## Run jest on vscode
+
+1. Install 2 extensions:
+
+- https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest
+- https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner
+
+2.  Add keyboard rule:
+
+example:
+
+```
+{
+  "key": "cmd+shift+r",
+  "command": "extension.runJest"
+}
+```
+
+ref: https://code.visualstudio.com/docs/getstarted/keybindings
+
+3.  Press the shortcut keys on test.
+
+![](start-server.run-jest-on-vscode.png)
