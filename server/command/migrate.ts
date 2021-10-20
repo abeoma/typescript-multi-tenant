@@ -76,7 +76,7 @@ export async function resetAll(): Promise<void> {
   async function dropAll() {
     await withAdminDbConnection(async (conn) => {
       const tenants = await new AdminRegistry(conn).fetchAll();
-      const tenantIds = tenants.map((t) => t.id.value.toString());
+      const tenantIds = tenants.map((t) => t.id.toString());
       await Promise.all(
         tenantIds.map((tid) =>
           withQueryRunner(conn, async (runner) => {

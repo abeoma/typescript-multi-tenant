@@ -20,9 +20,8 @@ export const tenantDispatcher = async (
   const tenant = await new AdminRegistry(adminConn).fetchById(tenantId);
   await adminConn.close();
 
-  const conn = await createTenantDatabaseConnection(tenant.id.value.toString());
+  const conn = await createTenantDatabaseConnection(tenant.id.toString());
   req.app.set(TENANT_DB_CONNECTION, conn);
   res.on("finish", () => req.app.get(TENANT_DB_CONNECTION).close());
-  res.on("finish", () => console.log("DB CONNECTION CLOSE!!"));
   next();
 };

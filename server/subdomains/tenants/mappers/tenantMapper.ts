@@ -8,6 +8,6 @@ export class TenantMap implements Mapper<Tenant> {
   }
 
   public static toPersistence(tenant: Tenant): { id: string } {
-    return { id: tenant.id.value.toString() };
+    return { id: tenant.id.toString() };
   }
 }

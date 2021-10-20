@@ -11,7 +11,6 @@ export async function createTenantDatabaseConnection(
   tenantId: string
 ): Promise<Connection> {
   const config = createTenantOrmConfig(tenantId);
-  console.log("TENANT DB CONNECTION BEGIN!!!!");
   return await createConnection(config);
 }
 

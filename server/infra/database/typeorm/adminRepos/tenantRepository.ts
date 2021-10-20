@@ -13,12 +13,12 @@ export class TenantRepository implements ITenantRepository {
   }
 
   async exists(id: TenantId): Promise<boolean> {
-    const count = await this.repo.count({ id: id.value.toString() });
+    const count = await this.repo.count({ id: id.toString() });
     return count === 1;
   }
 
   async fetchById(id: TenantId): Promise<Tenant> {
-    const model = await this.repo.findOne(id.value.toString());
+    const model = await this.repo.findOne(id.toString());
     if (!model) throw new Error("Tenant not found.");
     return TenantMap.toDomain(model);
   }
