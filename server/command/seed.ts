@@ -19,7 +19,7 @@ export class SeedImporter {
 
   private async importUsers() {
     const users = range(10).map((i) => ({
-      email: `test+${i}@sample.com`,
+      email: `dummy+${i}@hoo.bar`,
       firstName: choice(firstNames),
       lastName: choice(lastNames),
     }));
