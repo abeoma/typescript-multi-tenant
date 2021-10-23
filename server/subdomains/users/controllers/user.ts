@@ -11,7 +11,15 @@ export class UserController extends BaseController {
     this.reg = reg;
   }
 
-  async registerUser(
+  async getUsers(
+    req: express.Request,
+    res: express.Response
+  ): Promise<express.Response> {
+    const users = await new UserApplicationService(this.reg).fetchUsers();
+    return this.ok(res, users);
+  }
+
+  async createUser(
     req: express.Request,
     res: express.Response
   ): Promise<unknown> {

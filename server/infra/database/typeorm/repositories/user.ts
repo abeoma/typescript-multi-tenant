@@ -28,6 +28,11 @@ export class UserRepository implements IUserRepository {
     return modelToDomain(model);
   }
 
+  async fetchList(): Promise<User[]> {
+    const models = await this.repo.find();
+    return models.map((model) => UserMap.toDomain(model));
+  }
+
   async save(user: User, transactionManager: EntityManager): Promise<void> {
     const data = UserMap.toPersistence(user);
     const model = this.repo.create(data);
@@ -43,8 +48,8 @@ function modelToDomain(model: UserModel): User {
   return UserMap.toDomain({
     id: model.id,
     email: model.email,
-    password: "",
-    passwordSalt: "",
+    // password: "",
+    // passwordSalt: "",
     firstName: model.firstName,
     lastName: model.lastName,
     isActive: model.isActive,

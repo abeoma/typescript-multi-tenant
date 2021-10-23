@@ -4,12 +4,13 @@ import express from "express";
 const userRouter = express.Router();
 
 userRouter.get("/", (req, res) => {
-  res.send("THIS IS USER LIST.");
+  const reg = req.app.get("registry");
+  new UserController(reg).getUsers(req, res);
 });
 
 userRouter.post("/", (req, res) => {
   const reg = req.app.get("registry");
-  new UserController(reg).registerUser(req, res);
+  new UserController(reg).createUser(req, res);
 });
 
 export { userRouter };
