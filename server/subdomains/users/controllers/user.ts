@@ -1,21 +1,21 @@
-import { CreateUserUseCase } from "./../usecases/createUserUsecase";
+import { UserApplicationService } from "./../services/user";
 import { BaseController } from "../../../shared/infra/http/models/BaseController";
 import express from "express";
-import { IUserRepository } from "../repositories/user";
+import { IRegistry } from "../../../infra/database/interfaces/registry";
 
 export class UserController extends BaseController {
-  private repo: IUserRepository;
+  private reg: IRegistry;
 
-  constructor(repo: IUserRepository) {
+  constructor(reg: IRegistry) {
     super();
-    this.repo = repo;
+    this.reg = reg;
   }
 
-  async createUser(
+  async registerUser(
     req: express.Request,
     res: express.Response
   ): Promise<unknown> {
-    new CreateUserUseCase(this.repo).execute({
+    new UserApplicationService(this.reg).registerUser({
       email: `test+${String(Math.random())}@gmail.com`,
       password: "test",
       firstName: "taro",
