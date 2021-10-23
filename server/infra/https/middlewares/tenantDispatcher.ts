@@ -1,3 +1,4 @@
+import { TypeOrmRegistry } from "./../../database/typeorm/repositories/registry";
 import assert from "assert";
 import express from "express";
 import { AdminRegistry } from "../../database/typeorm/adminRepos/adminRegistry";
@@ -21,7 +22,8 @@ export const tenantDispatcher = async (
   await adminConn.close();
 
   const conn = await createTenantDatabaseConnection(tenant.id.toString());
-  req.app.set(TENANT_DB_CONNECTION, conn);
-  res.on("finish", () => req.app.get(TENANT_DB_CONNECTION).close());
+  const registry = new TypeOrmRegistry(conn);
+  req.app.set("registry", registry);
+  res.on("finish", () => conn.close());
   next();
 };

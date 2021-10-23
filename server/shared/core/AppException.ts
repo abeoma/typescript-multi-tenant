@@ -1,6 +1,6 @@
-import { UseCaseException } from "./UseCaseException";
+import { ApplicationServiceException } from "./ApplicationServiceException";
 
-export class UnexpectedException extends UseCaseException {
+export class UnexpectedException extends ApplicationServiceException {
   public constructor(err: unknown) {
     super("An unexpected error occurred.", err);
     console.log("[AppError]: An unexpected error occurred");

@@ -1,9 +1,11 @@
-interface IUseCaseException {
+interface IApplicationServiceException {
   message: string;
   error?: unknown;
 }
 
-export abstract class UseCaseException implements IUseCaseException {
+export class ApplicationServiceException
+  implements IApplicationServiceException
+{
   public readonly message: string;
   public readonly error?: unknown;
 
