@@ -7,7 +7,7 @@ export class UserController extends BaseController {
     req: express.Request,
     res: express.Response
   ): Promise<express.Response> {
-    const reg = req.app.get("registry");
+    const reg = req.services.registry;
     const users = await new UserApplicationService(reg).fetchUsers();
     return this.ok(res, users);
   }
@@ -16,7 +16,7 @@ export class UserController extends BaseController {
     req: express.Request,
     res: express.Response
   ): Promise<unknown> {
-    const reg = req.app.get("registry");
+    const reg = req.services.registry;
     new UserApplicationService(reg).registerUser({
       email: `test+${String(Math.random())}@gmail.com`,
       password: "test",

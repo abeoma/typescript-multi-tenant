@@ -10,5 +10,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["**/*"]
+  "include": ["**/*"],
+  "ts-node": {
+    "files": true
+  },
+  "files": ["./app.ts", "./types/**/*.d.ts"]
 }
