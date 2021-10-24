@@ -5,7 +5,7 @@ import {
   resetAll,
   setupDevTenant,
 } from "./migrate";
-import { assertIsString } from "../../lib/asserts";
+import { assertIsString } from "../../shared/asserts";
 
 type Command = {
   name: string;

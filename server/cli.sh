@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose run --rm cli yarn run:command "$@"
+docker-compose run --rm cli yarn server run:command "$@"

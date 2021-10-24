@@ -23,7 +23,7 @@ export const tenantDispatcher = async (
 
   const conn = await createTenantDatabaseConnection(tenant.id.toString());
   const registry = new TypeOrmRegistry(conn);
-  req.app.set("registry", registry);
+  req.services = { registry };
   res.on("finish", () => conn.close());
   next();
 };
