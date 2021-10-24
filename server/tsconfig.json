@@ -8,11 +8,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "typeRoots": ["./node_modules/@types", "../node_modules/@types", "./@types"]
   },
   "include": ["**/*"],
   "ts-node": {
     "files": true
   },
-  "files": ["./app.ts", "./types/**/*.d.ts"]
+  "files": ["./app.ts"]
 }

@@ -2,13 +2,13 @@ import HtmlWebPackPlugin from "html-webpack-plugin";
 import path from "path";
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
-  template: "./frontend/index.html",
+  template: "./index.html",
   filename: "./index.html",
 });
 module.exports = {
-  entry: "./frontend/index.tsx",
+  entry: "./index.tsx",
   output: {
-    path: path.resolve("frontend/dist"),
+    path: path.resolve("dist"),
     filename: "[name].js",
   },
   module: {

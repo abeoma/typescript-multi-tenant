@@ -37,6 +37,7 @@
   },
   "ignorePatterns": [
     "server/infra/database/typeorm/migrations/**/*",
-    "server/dist/"
+    "server/dist/**/*",
+    "frontend/dist/**/*"
   ]
 }
