@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "1.0.0",
   "scripts": {
-    "start": "TS_NODE_PROJECT=\"./config/tsconfig.webpack.json\" webpack serve --config ./config/webpack.config.ts --open --mode development",
+    "start": "TS_NODE_PROJECT=\"./config/tsconfig.webpack.json\" npx env-cmd -f ../docker/envs/app.env npx webpack serve --config ./config/webpack.config.local.app.ts --open --mode development --hot",
     "build": "TS_NODE_PROJECT=\"./config/tsconfig.webpack.json\" webpack --config ./config/webpack.config.ts --mode production"
   },
   "devDependencies": {
@@ -13,6 +13,8 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^6.1.0",
+    "env-cmd": "^10.1.0",
+    "http-proxy-middleware": "^2.0.1",
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2",
