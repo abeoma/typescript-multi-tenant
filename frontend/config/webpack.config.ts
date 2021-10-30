@@ -17,7 +17,7 @@ const typescriptRule = {
     include: [
       path.resolve(__dirname, "../app"),
       path.resolve(__dirname, "../lib"),
-      path.resolve(__dirname, "../../node_modules/shared"),
+      path.resolve(__dirname, "../../node_modules/@barasu/common"),
     ],
     exclude: [/\.test\.tsx?$/],
   },
