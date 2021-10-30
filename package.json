@@ -8,12 +8,12 @@
   "workspaces": [
     "server",
     "frontend",
-    "shared"
+    "common"
   ],
   "scripts": {
     "server": "yarn workspace server",
     "frontend": "yarn workspace frontend",
-    "shared": "yarn workspace shared",
+    "common": "yarn workspace common",
     "eslint:check": "npx eslint . --ext .js,.jsx,.ts,.tsx",
     "eslint:fix": "npx eslint --fix",
     "format:check": "prettier --check './**/*.{ts,tsx}'",
