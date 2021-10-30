@@ -23,7 +23,7 @@ services:
       NODE_ENV: development
     env_file: ./docker/envs/app.env
     ports:
-      - "5000:5000"
+      - "5005:5005"
     volumes:
       - .:/app
     depends_on:

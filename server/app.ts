@@ -4,7 +4,7 @@ import { tenantDispatcher } from "./infra/https/middlewares/tenantDispatcher";
 import { appRouter } from "./infra/https/routers/app";
 
 const app = express();
-const port = 5000;
+const port = 5005;
 
 app.use(tenantDispatcher);
 app.use("/api", appRouter);
