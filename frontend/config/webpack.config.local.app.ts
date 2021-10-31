@@ -1,25 +1,21 @@
-import { WebpackOptionsNormalized } from "webpack";
-import { createProxyMiddleware } from "http-proxy-middleware";
+import webpack from "webpack";
+import { merge } from "webpack-merge";
 import baseConfig from "./webpack.config";
 
 const tenantId = "barasu-dev";
-const proxy = createProxyMiddleware({
-  target: "http://localhost:5005",
-  onProxyReq: function (req, _res, _proxyOptions) {
-    req.setHeader("X-TENANT", tenantId);
-  },
-});
 
-const config: WebpackOptionsNormalized = {
-  ...baseConfig,
+const config: webpack.Configuration = merge(baseConfig, {
   devServer: {
     historyApiFallback: {
       index: "/dist/index.html",
     },
     proxy: {
-      "/api": proxy,
+      "/api": {
+        target: "http://localhost:5005",
+        headers: { "X-TENANT": tenantId },
+      },
     },
   },
-};
+});
 
 export default config;

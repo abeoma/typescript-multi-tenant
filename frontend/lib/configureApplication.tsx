@@ -11,12 +11,15 @@ import { useLocation } from "react-router";
 import { IsJsonString } from "./components/utils";
 import {
   AnyAction,
+  applyMiddleware,
   CombinedState,
   combineReducers,
   createStore,
   Reducer,
 } from "redux";
 import { Provider } from "react-redux";
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "../app/sagas";
 
 const CLEAR_ALL_STATE = Symbol("CLEAR_ALL_STATE");
 
@@ -62,6 +65,9 @@ export default function configureApplication() {
       }
     },
   });
+
+  const sagaMiddleware = createSagaMiddleware();
+
   const appReducer = combineReducers({
     router: connectRouter(browserHistory),
   });
@@ -74,7 +80,9 @@ export default function configureApplication() {
     }
     return appReducer(state, action);
   };
-  const store = createStore(reducer, {});
+  const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+  sagaMiddleware.run(rootSaga);
+
   return {
     render(Root: React.ComponentClass | React.FC, target: HTMLElement) {
       ReactDOM.render(

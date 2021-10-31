@@ -1,6 +1,7 @@
-import { WebpackOptionsNormalized } from "webpack";
+import webpack from "webpack";
 import HtmlWebPackPlugin from "html-webpack-plugin";
 import path from "path";
+import merge from "webpack-merge";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -37,7 +38,7 @@ const typescriptRule = {
 type Mode = "production" | "development";
 const mode: Mode = isProduction ? "production" : "development";
 
-const baseConfig = {
+const baseConfig: webpack.Configuration = {
   mode,
   context: __dirname,
   cache: !isProduction && {
@@ -83,8 +84,7 @@ const baseConfig = {
   watchOptions: {},
 };
 
-const config: WebpackOptionsNormalized = {
-  ...baseConfig,
+const config: webpack.Configuration = merge(baseConfig, {
   entry: { main: { import: [path.join(__dirname, "../app/", "index.tsx")] } },
   module: {
     defaultRules: [],
@@ -93,6 +93,14 @@ const config: WebpackOptionsNormalized = {
     rules: [typescriptRule, jsRule, cssRule],
   },
   plugins: [htmlWebpackPlugin],
-};
+  devServer: {
+    host: "0.0.0.0",
+    port: 80,
+    hot: "only",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  },
+});
 
 export default config;
