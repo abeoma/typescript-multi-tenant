@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "1.0.0",
   "scripts": {
-    "start": "TS_NODE_PROJECT=\"./config/tsconfig.webpack.json\" npx env-cmd -f ../docker/envs/app.env npx webpack serve --config ./config/webpack.config.local.app.ts --open --mode development --hot",
+    "start": "TS_NODE_PROJECT=\"./config/tsconfig.webpack.json\" npx env-cmd -f ../docker/envs/app.env npx webpack serve --hot --config ./config/webpack.config.local.app.ts",
     "build": "TS_NODE_PROJECT=\"./config/tsconfig.webpack.json\" webpack --config ./config/webpack.config.ts --mode production"
   },
   "devDependencies": {
@@ -12,13 +12,16 @@
     "@types/react-router-dom": "^5.3.2",
     "@types/redux": "^3.6.0",
     "@types/styled-components": "^5.1.15",
+    "@types/webpack": "^5.28.0",
+    "@types/webpack-dev-server": "^4.3.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.2.2",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^6.1.0",
     "env-cmd": "^10.1.0",
-    "http-proxy-middleware": "^2.0.1",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.2.6",
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2",
@@ -27,7 +30,6 @@
   "dependencies": {
     "@barasu/common": "*",
     "connected-react-router": "^6.9.1",
-    "html-webpack-plugin": "^5.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
