@@ -1,9 +1,9 @@
-import * as React from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import App from "../App";
 import GlobalStyle from "../../../lib/GlobalStyle";
 
-const Root: React.FC = () => {
+const Root = () => {
   return (
     <React.Fragment>
       <App />
