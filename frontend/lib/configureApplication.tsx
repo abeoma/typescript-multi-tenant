@@ -1,31 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import {
-  ConnectedRouter,
-  connectRouter,
-  RouterState,
-} from "connected-react-router";
+import { ConnectedRouter } from "connected-react-router";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { IsJsonString } from "./components/utils";
-import {
-  AnyAction,
-  applyMiddleware,
-  CombinedState,
-  combineReducers,
-  createStore,
-  Reducer,
-} from "redux";
 import { Provider } from "react-redux";
-import createSagaMiddleware from "redux-saga";
-import rootSaga from "../app/sagas";
-
-const CLEAR_ALL_STATE = Symbol("CLEAR_ALL_STATE");
-
-export function clearAllState() {
-  return { type: CLEAR_ALL_STATE };
-}
+import createStore from "./createStore";
+import { Saga } from "redux-saga";
 
 const ScrollToTop: React.FC = () => {
   const { pathname, search } = useLocation();
@@ -35,8 +17,8 @@ const ScrollToTop: React.FC = () => {
   return null;
 };
 
-export default function configureApplication() {
-  const browserHistory = createBrowserHistory({
+export default function configureApplication(saga: Saga) {
+  const history = createBrowserHistory({
     //https://reactrouter.com/web/api/BrowserRouter/getuserconfirmation-func
     getUserConfirmation: (
       payload: string,
@@ -48,7 +30,7 @@ export default function configureApplication() {
 
         // Check if the current location and the next are equal. If so, ignore. This prevents some double
         // confirmation alerts.
-        if (browserHistory.location.key === nextLocation.key) {
+        if (history.location.key === nextLocation.key) {
           return;
         }
 
@@ -66,28 +48,13 @@ export default function configureApplication() {
     },
   });
 
-  const sagaMiddleware = createSagaMiddleware();
-
-  const appReducer = combineReducers({
-    router: connectRouter(browserHistory),
-  });
-  const reducer: Reducer<CombinedState<{ router: RouterState }>, AnyAction> = (
-    state,
-    action
-  ) => {
-    if (action.type === CLEAR_ALL_STATE) {
-      return appReducer(undefined, action);
-    }
-    return appReducer(state, action);
-  };
-  const store = createStore(reducer, applyMiddleware(sagaMiddleware));
-  sagaMiddleware.run(rootSaga);
+  const store = createStore({ saga, history });
 
   return {
     render(Root: React.ComponentClass | React.FC, target: HTMLElement) {
       ReactDOM.render(
         <Provider store={store}>
-          <ConnectedRouter history={browserHistory}>
+          <ConnectedRouter history={history}>
             <ScrollToTop />
             <Root />
           </ConnectedRouter>
