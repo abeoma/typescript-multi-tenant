@@ -11,6 +11,7 @@ import {
 import AppsIcon from "@mui/icons-material/Apps";
 import PeopleIcon from "@mui/icons-material/People";
 import urls from "../../urls";
+import { baseFontSize } from "../../../lib/style-variables";
 
 const StyledLink = styled(NavLink)``;
 
@@ -24,7 +25,11 @@ const Item = ({
   icon?: React.ReactNode;
 }) => (
   <StyledLink exact to={to}>
-    <Tooltip title={title} placement={"right"}>
+    <Tooltip
+      title={<div style={{ fontSize: baseFontSize }}>{title}</div>}
+      placement={"right"}
+      arrow={true}
+    >
       <ListItem button>
         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
         <ListItemText primary={title} />
