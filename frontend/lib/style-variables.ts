@@ -1,5 +1,6 @@
 export const baseFontSize = "16px";
 
+export const fontColor = "rgba(0,0,0,0.87)";
 export const headerColorBg = "#253342";
 
 const tabletMaxWidth = 1024;

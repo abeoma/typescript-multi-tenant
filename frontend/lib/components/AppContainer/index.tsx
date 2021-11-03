@@ -16,7 +16,11 @@ import {
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
-import { headerColorBg, mediaTabletAndMobile } from "../../style-variables";
+import {
+  fontColor,
+  headerColorBg,
+  mediaTabletAndMobile,
+} from "../../style-variables";
 
 const DRAWER_WIDTH = 240;
 
@@ -104,7 +108,7 @@ const AppContainer = ({ children, leftNav }: Props) => {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Dashboard
+            Barasu
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -113,7 +117,16 @@ const AppContainer = ({ children, leftNav }: Props) => {
           </IconButton>
         </Toolbar>
       </StyledAppBar>
-      <StyledDrawer variant="permanent" open={open}>
+      <StyledDrawer
+        variant="permanent"
+        open={open}
+        sx={{
+          ["& a"]: {
+            textDecoration: "none",
+            color: fontColor,
+          },
+        }}
+      >
         <Toolbar
           sx={{
             display: "flex",
