@@ -22,6 +22,7 @@ const DRAWER_WIDTH = 240;
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps & { open?: boolean }>(({ theme, open }) => ({
+  background: "#253342",
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
