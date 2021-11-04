@@ -38,7 +38,7 @@ const Item = ({
   </StyledLink>
 );
 
-export const LeftNav = () => {
+export const SidebarItemList = () => {
   return (
     <List>
       <Item to={urls.assets()} icon={<AppsIcon />} title={"Assets"} />
