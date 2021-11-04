@@ -4,7 +4,7 @@ import { createBrowserHistory } from "history";
 import { ConnectedRouter } from "connected-react-router";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
-import { IsJsonString } from "./components/utils";
+import { IsJsonString } from "./utils";
 import { Provider } from "react-redux";
 import createStore from "./createStore";
 import { Saga } from "redux-saga";
