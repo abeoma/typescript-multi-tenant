@@ -1,10 +1,45 @@
 import React from "react";
-import { Divider, Drawer, IconButton, styled, Toolbar } from "@mui/material";
+import {
+  Divider,
+  Drawer,
+  IconButton,
+  styled,
+  Toolbar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+} from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { fontColor, mediaTabletAndMobile } from "../../../lib/style-variables";
-import { SidebarItemList } from "./SidebarItemList";
+import { NavLink } from "react-router-dom";
+import { baseFontSize } from "../../../lib/style-variables";
 
 export const DRAWER_WIDTH = 240;
+
+export type SidebarItem = {
+  to: string;
+  title: string;
+  icon: React.ReactNode;
+};
+
+const StyledLink = styled(NavLink)``;
+
+const Item = ({ to, title, icon }: SidebarItem) => (
+  <StyledLink exact to={to}>
+    <Tooltip
+      title={<div style={{ fontSize: baseFontSize }}>{title}</div>}
+      placement={"right"}
+      arrow={true}
+    >
+      <ListItem button>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={title} />
+      </ListItem>
+    </Tooltip>
+  </StyledLink>
+);
 
 const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -32,9 +67,13 @@ const StyledDrawer = styled(Drawer, {
   },
 }));
 
-type Props = { open: boolean; toggleDrawer: () => void };
+type Props = {
+  open: boolean;
+  toggleDrawer: () => void;
+  items: SidebarItem[];
+};
 
-export const Sidebar = ({ open, toggleDrawer }: Props) => {
+export const Sidebar = ({ open, toggleDrawer, items }: Props) => {
   return (
     <StyledDrawer
       variant="permanent"
@@ -59,7 +98,11 @@ export const Sidebar = ({ open, toggleDrawer }: Props) => {
         </IconButton>
       </Toolbar>
       <Divider />
-      <SidebarItemList />
+      <List>
+        {items.map((v, i) => (
+          <Item key={i} {...v} />
+        ))}
+      </List>
     </StyledDrawer>
   );
 };

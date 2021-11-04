@@ -17,7 +17,7 @@ import {
   headerColorBg,
   mediaTabletAndMobile,
 } from "../../../lib/style-variables";
-import { DRAWER_WIDTH, Sidebar } from "./Sidebar";
+import { DRAWER_WIDTH, Sidebar, SidebarItem } from "./Sidebar";
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -38,9 +38,9 @@ const StyledAppBar = styled(AppBar, {
   }),
 }));
 
-type Props = { children: React.ReactNode };
+type Props = { children: React.ReactNode; sidebarItems: SidebarItem[] };
 
-const AppLayout = ({ children }: Props) => {
+const AppLayout = ({ children, sidebarItems }: Props) => {
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -86,7 +86,7 @@ const AppLayout = ({ children }: Props) => {
           </IconButton>
         </Toolbar>
       </StyledAppBar>
-      <Sidebar open={open} toggleDrawer={toggleDrawer} />
+      <Sidebar open={open} toggleDrawer={toggleDrawer} items={sidebarItems} />
       <Box
         component="main"
         sx={{
