@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MouseEvent, useState } from "react";
 import {
   AppBar,
   AppBarProps,
@@ -7,6 +7,8 @@ import {
   Container,
   CssBaseline,
   IconButton,
+  Menu,
+  MenuItem,
   styled,
   Toolbar,
   Typography,
@@ -18,6 +20,7 @@ import {
   mediaTabletAndMobile,
 } from "../../../lib/style-variables";
 import { DRAWER_WIDTH, Sidebar, SidebarItem } from "./Sidebar";
+import { AccountCircle } from "@mui/icons-material";
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -45,6 +48,39 @@ const AppLayout = ({ children, sidebarItems }: Props) => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleProfileMenuOpen = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuId = "account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
+  );
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -79,13 +115,31 @@ const AppLayout = ({ children, sidebarItems }: Props) => {
           >
             Barasu
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <Box sx={{ display: "flex" }}>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+            >
+              <Badge badgeContent={0} color="error">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </Box>
         </Toolbar>
       </StyledAppBar>
+      {renderMenu}
       <Sidebar open={open} toggleDrawer={toggleDrawer} items={sidebarItems} />
       <Box
         component="main"
