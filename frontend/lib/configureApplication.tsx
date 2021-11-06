@@ -8,6 +8,7 @@ import { IsJsonString } from "./utils";
 import { Provider } from "react-redux";
 import createStore from "./createStore";
 import { Saga } from "redux-saga";
+import { ReducersMapObject } from "redux";
 
 const ScrollToTop: React.FC = () => {
   const { pathname, search } = useLocation();
@@ -17,7 +18,12 @@ const ScrollToTop: React.FC = () => {
   return null;
 };
 
-export default function configureApplication(saga: Saga) {
+type Props = {
+  reducers: ReducersMapObject;
+  saga: Saga;
+};
+
+export default function configureApplication({ reducers, saga }: Props) {
   const history = createBrowserHistory({
     //https://reactrouter.com/web/api/BrowserRouter/getuserconfirmation-func
     getUserConfirmation: (
@@ -48,7 +54,7 @@ export default function configureApplication(saga: Saga) {
     },
   });
 
-  const store = createStore({ saga, history });
+  const store = createStore({ reducers, saga, history });
 
   return {
     render(Root: React.ComponentClass | React.FC, target: HTMLElement) {
