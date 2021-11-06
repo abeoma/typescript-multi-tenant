@@ -7,6 +7,7 @@ import {
   combineReducers,
   createStore,
   Reducer,
+  ReducersMapObject,
 } from "redux";
 import { History } from "history";
 
@@ -16,11 +17,16 @@ export function clearAllState() {
   return { type: CLEAR_ALL_STATE };
 }
 
-type Props = { saga: Saga; history: History };
+type Props = {
+  reducers: ReducersMapObject;
+  saga: Saga;
+  history: History;
+};
 
-export default ({ saga, history }: Props) => {
+export default ({ reducers, saga, history }: Props) => {
   const reducer = combineReducers({
     router: connectRouter(history),
+    ...reducers,
   });
   const resettableReducer: Reducer<
     CombinedState<{ router: RouterState }>,
