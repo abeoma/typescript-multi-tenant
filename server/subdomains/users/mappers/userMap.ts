@@ -3,7 +3,7 @@ import { User } from "../domain/user";
 import { UserPassword } from "../domain/userPassword";
 import { UserEmail } from "../domain/userEmail";
 import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
-import { UserDTO } from "../dtos/userDTO";
+import { UserDTO } from "../../../dtos";
 
 type Props = {
   id: string;

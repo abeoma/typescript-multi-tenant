@@ -1,9 +1,9 @@
 import { UserMap } from "./../mappers/userMap";
-import { UserDTO } from "./../dtos/userDTO";
 import { IRegistry } from "../../../infra/database/interfaces/registry";
 import { ApplicationServiceException } from "../../../shared/core/ApplicationServiceException";
 import { UserFactory } from "./../domain/factories/user";
 import { User } from "../domain/user";
+import { UserDTO } from "../../../dtos";
 
 export class UserApplicationService {
   private reg: IRegistry;
