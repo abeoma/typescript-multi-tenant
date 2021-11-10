@@ -1,30 +1,28 @@
-import actionCreatorFactory from "typescript-fsa";
-import { reducerWithInitialState } from "typescript-fsa-reducers";
-import { initialListPageState } from "../../reducers/types";
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { User } from "../../schema";
+import { RootState } from "../../store";
 
-const actionCreator = actionCreatorFactory("USERS_REDUCER");
+const usersAdapter = createEntityAdapter<User>();
 
-export const usersReducerActionCreators = {
-  onLoadUsers: actionCreator<{
-    entries: string[];
-    sum: number;
-    offset: number;
-  }>("ON_LOAD"),
-};
+const initialState = usersAdapter.getInitialState({ values: { users: [] } });
 
-const actions = usersReducerActionCreators; // alias
+const slice = createSlice({
+  name: "users",
+  initialState,
+  reducers: {
+    load(state, action: PayloadAction<User[]>) {
+      usersAdapter.setAll(state, action.payload);
+    },
+  },
+});
 
-export interface UsersState {
-  entries: string[];
-  sum: number;
-  offset: number;
-  page: number;
-}
+export const usersReducerActions = slice.actions;
+export default slice.reducer;
 
-const usersReducer = reducerWithInitialState<UsersState>({
-  ...initialListPageState,
-}).case(actions.onLoadUsers, (state, payload) => ({
-  ...state,
-  ...payload,
-}));
-export default usersReducer;
+export const usersSelectors = usersAdapter.getSelectors<RootState>(
+  (state) => state.users
+);
