@@ -38,6 +38,7 @@
     "@reduxjs/toolkit": "^1.6.2",
     "connected-react-router": "^6.9.1",
     "cross-fetch": "^3.1.4",
+    "history": "^5.1.0",
     "lodash-es": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
