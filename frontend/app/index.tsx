@@ -1,14 +1,19 @@
-import configureApplication from "../lib/configureApplication";
+import React from "react";
+import ReactDOM from "react-dom";
 import Root from "./containers/Root";
 import { assertIsDefined } from "@barasu/common/asserts";
-import rootSaga from "./sagas";
-import { viewState, entities } from "./reducers";
-
-const app = configureApplication({
-  reducers: { viewState, entities },
-  saga: rootSaga,
-});
+import { store, history } from "./store";
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
 
 const target = document.getElementById("index");
 assertIsDefined(target);
-app.render(Root, target);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <Root />
+    </ConnectedRouter>
+  </Provider>,
+  target
+);

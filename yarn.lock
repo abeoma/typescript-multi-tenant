@@ -279,6 +279,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.7.6":
+  version "7.16.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
+  integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.16.0", "@babel/template@^7.3.3":
   version "7.16.0"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.16.0.tgz#d16a35ebf4cd74e202083356fab21dd89363ddd6"
@@ -813,6 +820,16 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
+
+"@reduxjs/toolkit@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.6.2.tgz#2f2b5365df77dd6697da28fdf44f33501ed9ba37"
+  integrity sha512-HbfI/hOVrAcMGAYsMWxw3UJyIoAS9JTdwddsjlr5w3S50tXhWb+EMyhIw+IAvCVCLETkzdjgH91RjDSYZekVBA==
+  dependencies:
+    immer "^9.0.6"
+    redux "^4.1.0"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -4529,6 +4546,13 @@ history@^4.9.0:
     tiny-warning "^1.0.0"
     value-equal "^1.0.1"
 
+history@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/history/-/history-5.1.0.tgz#2e93c09c064194d38d52ed62afd0afc9d9b01ece"
+  integrity sha512-zPuQgPacm2vH2xdORvGGz1wQMuHSIB56yNAy5FnLuwOwgSYyPKptJtcMm6Ev+hRGeS+GzhbmRacHzvlESbFwDg==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+
 hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
@@ -4747,6 +4771,11 @@ ignore@^5.1.4, ignore@^5.1.8:
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.8.tgz#f150a8b50a34289b33e22f5889abd4d8016f0e57"
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
+
+immer@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.6.tgz#7a96bf2674d06c8143e327cbf73539388ddf1a73"
+  integrity sha512-G95ivKpy+EvVAnAab4fVa4YGYn24J1SpEktnJX7JJ45Bd7xqME/SCplFzYFmTbrkwZbQ4xJK1xMTUYBkN6pWsQ==
 
 "immutable@^3.8.1 || ^4.0.0-rc.1":
   version "4.0.0"
@@ -7252,7 +7281,12 @@ redux-saga@*, redux-saga@^1.1.3:
   dependencies:
     "@redux-saga/core" "^1.1.3"
 
-redux@*, redux@^4.0.0, redux@^4.0.4, redux@^4.1.2:
+redux-thunk@^2.3.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.4.0.tgz#ac89e1d6b9bdb9ee49ce69a69071be41bbd82d67"
+  integrity sha512-/y6ZKQNU/0u8Bm7ROLq9Pt/7lU93cT0IucYMrubo89ENjxPa7i8pqLKu6V4X7/TvYovQ6x01unTeyeZ9lgXiTA==
+
+redux@*, redux@^4.0.0, redux@^4.0.4, redux@^4.1.0, redux@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.1.2.tgz#140f35426d99bb4729af760afcf79eaaac407104"
   integrity sha512-SH8PglcebESbd/shgf6mii6EIoRM0zrQyjcuQ+ojmfxjTtE0z9Y8pa62iA/OJ58qjP6j27uyW4kUF4jl/jd6sw==
@@ -7397,7 +7431,7 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
-reselect@^4.1.1:
+reselect@^4.0.0, reselect@^4.1.1:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.2.tgz#7bf642992d143d4f3b0f2dca8aa52018808a1d51"
   integrity sha512-wg60ebcPOtxcptIUfrr7Jt3h4BR86cCW3R7y4qt65lnNb4yz4QgrXcbSioVsIOYguyz42+XTHIyJ5TEruzkFgQ==
@@ -8467,16 +8501,6 @@ typescript-compare@^0.0.2:
   integrity sha512-8ja4j7pMHkfLJQO2/8tut7ub+J3Lw2S3061eJLFQcvs3tsmJKp8KG5NtpLn7KcY2w08edF74BSVN7qJS0U6oHA==
   dependencies:
     typescript-logic "^0.0.0"
-
-typescript-fsa-reducers@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/typescript-fsa-reducers/-/typescript-fsa-reducers-1.2.2.tgz#1e2c8e8a50ca3e09e0d6fdf2a3b42bdd17de8094"
-  integrity sha512-IQ2VsIqUvmzVgWNDjxkeOxX97itl/rq+2u82jGsRdzCSFi9OtV4qf1Ec1urvj/eDlPHOaihIL7wMZzLYx9GvFg==
-
-typescript-fsa@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/typescript-fsa/-/typescript-fsa-3.0.0.tgz#3ad1cb915a67338e013fc21f67c9b3e0e110c912"
-  integrity sha512-xiXAib35i0QHl/+wMobzPibjAH5TJLDj+qGq5jwVLG9qR4FUswZURBw2qihBm0m06tHoyb3FzpnJs1GRhRwVag==
 
 typescript-logic@^0.0.0:
   version "0.0.0"
