@@ -1,14 +1,15 @@
 import { createTheme } from "@mui/material/styles";
-import { green, purple } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: purple[500],
+      main: "#3f51b5",
+      contrastText: "#fff",
     },
     secondary: {
-      main: green[500],
+      main: "#f44336",
     },
+    text: { primary: "rgba(0,0,0,0.87)" },
   },
 });
 

@@ -9,12 +9,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Tooltip,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { fontColor, mediaTabletAndMobile } from "../../../lib/style-variables";
 import { NavLink } from "react-router-dom";
-import { baseFontSize } from "../../../lib/style-variables";
 
 export const DRAWER_WIDTH = 240;
 
@@ -24,26 +21,22 @@ export type SidebarItem = {
   icon: React.ReactNode;
 };
 
-const StyledLink = styled(NavLink)``;
-
 const Item = ({ to, title, icon }: SidebarItem) => (
-  <StyledLink exact to={to}>
-    <Tooltip
-      title={<div style={{ fontSize: baseFontSize }}>{title}</div>}
-      placement={"right"}
-      arrow={true}
-    >
-      <ListItem button>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={title} />
-      </ListItem>
-    </Tooltip>
-  </StyledLink>
+  <NavLink exact to={to}>
+    <ListItem button>
+      <ListItemIcon>{icon}</ListItemIcon>
+      <ListItemText primary={title} />
+    </ListItem>
+  </NavLink>
 );
 
 const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
+  "& a": {
+    textDecoration: "none",
+    color: theme.palette.text.primary,
+  },
   "& .MuiDrawer-paper": {
     position: "relative",
     whiteSpace: "nowrap",
@@ -59,13 +52,18 @@ const StyledDrawer = styled(Drawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing(7),
-      [mediaTabletAndMobile]: {
+      "@media screen and (max-width: 1024px)": {
         width: 0,
       },
     }),
   },
 }));
+
+const StyledToolbar = styled(Toolbar)({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+});
 
 type Props = {
   open: boolean;
@@ -75,28 +73,12 @@ type Props = {
 
 export const Sidebar = ({ open, toggleDrawer, items }: Props) => {
   return (
-    <StyledDrawer
-      variant="permanent"
-      open={open}
-      sx={{
-        ["& a"]: {
-          textDecoration: "none",
-          color: fontColor,
-        },
-      }}
-    >
-      <Toolbar
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          px: [1],
-        }}
-      >
+    <StyledDrawer variant="permanent" open={open} sx={{}}>
+      <StyledToolbar>
         <IconButton onClick={toggleDrawer}>
           <ChevronLeftIcon />
         </IconButton>
-      </Toolbar>
+      </StyledToolbar>
       <Divider />
       <List>
         {items.map((v, i) => (

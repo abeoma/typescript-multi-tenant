@@ -7,6 +7,7 @@ import {
   Container,
   CssBaseline,
   IconButton,
+  IconButtonProps,
   Menu,
   MenuItem,
   styled,
@@ -15,17 +16,16 @@ import {
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  headerColorBg,
-  mediaTabletAndMobile,
-} from "../../../lib/style-variables";
 import { DRAWER_WIDTH, Sidebar, SidebarItem } from "./Sidebar";
 import { AccountCircle } from "@mui/icons-material";
 
-const StyledAppBar = styled(AppBar, {
+const FlexBox = styled(Box)({
+  display: "flex",
+});
+
+const Header = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps & { open?: boolean }>(({ theme, open }) => ({
-  background: headerColorBg,
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
@@ -39,6 +39,31 @@ const StyledAppBar = styled(AppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
+}));
+
+const MenuButton = styled(IconButton)<IconButtonProps & { open?: boolean }>(
+  ({ theme, open }) => ({
+    marginRight: theme.spacing(1),
+    display: "none",
+    [theme.breakpoints.down("md")]: {
+      display: open ? "none" : "block",
+    },
+  })
+);
+
+const MainBox = styled(Box)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "light"
+      ? theme.palette.grey[100]
+      : theme.palette.grey[900],
+  flexGrow: 1,
+  height: "100vh",
+  overflow: "auto",
+}));
+
+const MainContainer = styled(Container)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  marginBottom: theme.spacing(4),
 }));
 
 type Props = { children: React.ReactNode; sidebarItems: SidebarItem[] };
@@ -61,51 +86,21 @@ const AppLayout = ({ children, sidebarItems }: Props) => {
   };
 
   const menuId = "account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <FlexBox>
       <CssBaseline />
-      <StyledAppBar position="absolute" open={open}>
-        <Toolbar
-          sx={{
-            pr: "24px", // keep right padding when drawer closed
-          }}
-        >
-          <IconButton
+      <Header position="absolute" open={open}>
+        <Toolbar>
+          <MenuButton
+            open={open}
             edge="start"
             color="inherit"
             aria-label="open drawer"
             onClick={toggleDrawer}
-            sx={{
-              marginRight: "36px",
-              display: "none",
-              [mediaTabletAndMobile]: {
-                display: open ? "none" : "block",
-              },
-            }}
           >
             <MenuIcon />
-          </IconButton>
+          </MenuButton>
           <Typography
             component="h1"
             variant="h6"
@@ -115,7 +110,7 @@ const AppLayout = ({ children, sidebarItems }: Props) => {
           >
             Barasu
           </Typography>
-          <Box sx={{ display: "flex" }}>
+          <FlexBox>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
@@ -136,29 +131,33 @@ const AppLayout = ({ children, sidebarItems }: Props) => {
             >
               <AccountCircle />
             </IconButton>
-          </Box>
+          </FlexBox>
         </Toolbar>
-      </StyledAppBar>
-      {renderMenu}
-      <Sidebar open={open} toggleDrawer={toggleDrawer} items={sidebarItems} />
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light"
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
+      </Header>
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
         }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
       >
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      </Menu>
+      <Sidebar open={open} toggleDrawer={toggleDrawer} items={sidebarItems} />
+      <MainBox component="main">
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          {children}
-        </Container>
-      </Box>
-    </Box>
+        <MainContainer maxWidth="lg">{children}</MainContainer>
+      </MainBox>
+    </FlexBox>
   );
 };
 
