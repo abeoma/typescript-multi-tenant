@@ -51,12 +51,12 @@ export class CustomNamingStrategy extends DefaultNamingStrategy {
 
 const baseConfig: { type: "mysql" } & Record<
   string,
-  string | number | boolean | CustomNamingStrategy
+  string | string[] | number | boolean | CustomNamingStrategy
 > = {
   type: "mysql",
   charset: "utf8mb4",
   synchronize: false,
-  logging: "all",
+  logging: ["error", "warn"],
   namingStrategy: new CustomNamingStrategy(),
   host: ADMIN_DB_HOST,
   port: ADMIN_DB_PORT,
