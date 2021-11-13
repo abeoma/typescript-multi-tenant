@@ -58,13 +58,17 @@ export async function createTenant({
 
 export async function setupDevTenant(id: string): Promise<void> {
   await createAdminDatabaseIfNotExists();
-  await withConnection(async (conn) => {
-    await conn
-      .createQueryBuilder()
-      .delete()
-      .from(TenantModel)
-      .where(id)
-      .execute();
+  await withAdminDbConnection(async (conn) => {
+    try {
+      await conn
+        .createQueryBuilder()
+        .delete()
+        .from(TenantModel)
+        .where("id = :id", { id })
+        .execute();
+    } catch {
+      // do nothing
+    }
     await withQueryRunner(conn, async (runner) => {
       await runner.dropDatabase(tenantIdToDbName(id), true);
     });
