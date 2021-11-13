@@ -52,7 +52,7 @@ const StyledDrawer = styled(Drawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      "@media screen and (max-width: 1024px)": {
+      [theme.breakpoints.down("md")]: {
         width: 0,
       },
     }),
