@@ -1,13 +1,12 @@
 import React, { ReactNode } from "react";
-import { styled, Typography, Paper } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 
-const Wrapper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
+const Wrapper = styled("div")({
   display: "flex",
   flexDirection: "column",
-}));
+});
 
-const Content = styled("div")({ height: "70vh", width: "100%" });
+const Content = styled("div")({});
 
 type Props = { title: string; children: ReactNode };
 export const Panel = ({ title, children }: Props) => (
