@@ -1,13 +1,20 @@
 import React, { ReactNode } from "react";
-import { Paper, Typography } from "@mui/material";
+import { styled, Typography, Paper } from "@mui/material";
+
+const Wrapper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  display: "flex",
+  flexDirection: "column",
+}));
+
+const Content = styled("div")({ height: "70vh", width: "100%" });
 
 type Props = { title: string; children: ReactNode };
-
 export const Panel = ({ title, children }: Props) => (
-  <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+  <Wrapper>
     <Typography component="h2" variant="h6" gutterBottom={true}>
       {title}
     </Typography>
-    <div style={{ height: 400, width: "100%" }}>{children}</div>
-  </Paper>
+    <Content>{children}</Content>
+  </Wrapper>
 );
