@@ -21,7 +21,7 @@ const slice = createSlice({
 });
 
 export const usersReducerActions = slice.actions;
-export default slice.reducer;
+export const usersReducer = slice.reducer;
 
 export const usersSelectors = usersAdapter.getSelectors<RootState>(
   (state) => state.users

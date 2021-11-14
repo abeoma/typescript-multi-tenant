@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import { Panel } from "../../../lib/components/Panel";
 import { RootState } from "../../store";
-import { usersSelectors } from "./reducer";
+import { usersSelectors } from "./slice";
 import { Chip, styled } from "@mui/material";
 import { NameEditCell, RowActionCell, StatusEditCell } from "./Cells";
 
