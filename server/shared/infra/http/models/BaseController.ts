@@ -1,4 +1,5 @@
 import * as express from "express";
+import { validationResult } from "express-validator";
 
 export abstract class BaseController {
   public static jsonResponse(
@@ -80,5 +81,18 @@ export abstract class BaseController {
     return res.status(500).json({
       message: error.toString(),
     });
+  }
+
+  public execValidation(
+    req: express.Request,
+    res: express.Response
+  ): void | express.Response {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        message: "InvalidRequestParams",
+        errors: errors.mapped(),
+      });
+    }
   }
 }
