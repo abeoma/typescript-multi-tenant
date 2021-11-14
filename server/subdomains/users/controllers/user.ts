@@ -16,12 +16,13 @@ export class UserController extends BaseController {
     req: express.Request,
     res: express.Response
   ): Promise<unknown> {
+    const { id, firstName, lastName, email } = req.body;
     const reg = req.services.registry;
     new UserApplicationService(reg).registerUser({
-      email: `test+${String(Math.random())}@gmail.com`,
-      password: "test",
-      firstName: "taro",
-      lastName: "sato",
+      id,
+      email,
+      firstName,
+      lastName,
     });
     return this.ok(res);
   }
