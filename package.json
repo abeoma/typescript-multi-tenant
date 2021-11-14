@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "server": "yarn workspace server",
+    "server:cli": "docker-compose run --rm cli yarn workspace server run:command",
     "frontend": "yarn workspace frontend",
     "common": "yarn workspace common",
     "eslint:check": "npx eslint . --ext .js,.jsx,.ts,.tsx",

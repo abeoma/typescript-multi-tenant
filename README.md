@@ -16,3 +16,16 @@ https://github.com/nodenv/nodenv
 > cat .node-version
 16.5.0
 ```
+
+## Getting started
+
+```
+# Build server
+docker compose up app
+
+# Setup seed data
+yarn server:cli setup-dev-tenant
+
+# Run frontend
+yarn frontend start
+```
