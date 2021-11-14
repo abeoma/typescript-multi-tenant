@@ -1,10 +1,8 @@
 import { UserModel } from "../infra/database/typeorm/models/tenant/user";
 import { Connection } from "typeorm";
-import { choice, range } from "../lib/helpers";
+import { range } from "../lib/helpers";
 import { v4 as uuidv4 } from "uuid";
-
-const firstNames = ["Hanako", "Yasuko", "Taro", "Jiro"];
-const lastNames = ["Sato", "Tanaka", "Fujii", "Suzuki"];
+import faker from "faker";
 
 export class SeedImporter {
   private conn: Connection;
@@ -18,10 +16,9 @@ export class SeedImporter {
   }
 
   private async importUsers() {
-    const users = range(10).map((i) => ({
-      email: `dummy+${i}@hoo.bar`,
-      firstName: choice(firstNames),
-      lastName: choice(lastNames),
+    const users = range(50).map((_) => ({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
     }));
     await this.conn
       .createQueryBuilder()
@@ -30,6 +27,7 @@ export class SeedImporter {
       .values(
         users.map((u) => ({
           id: uuidv4(),
+          email: `${u.firstName}.${u.lastName}@example.com`,
           password: "password",
           isActive: true,
           ...u,
