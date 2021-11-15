@@ -29,3 +29,15 @@ yarn server:cli setup-dev-tenant
 # Run frontend
 yarn frontend start
 ```
+
+## Add package
+
+In root directory:
+
+```
+yarn frontend add hoo
+yarn frontend add -D hoo
+
+yarn server add hoo
+yarn server add -D hoo
+```
