@@ -5,7 +5,8 @@
     "start": "nodemon --exec ts-node app.ts",
     "build": "tsc",
     "run:command": "ts-node command/main.ts",
-    "typeorm": "ts-node node_modules/.bin/typeorm -f infra/database/typeorm/ormconfig.ts"
+    "typeorm": "ts-node node_modules/.bin/typeorm -f infra/database/typeorm/ormconfig.ts",
+    "migrate:admin": "docker-compose run --rm cli yarn server prisma migrate dev --schema=./infra/database/prisma/admin/schema.prisma"
   },
   "devDependencies": {
     "@prisma/client": "^3.5.0",
