@@ -1,6 +1,8 @@
 import * as express from "express";
 import { validationResult } from "express-validator";
 
+type Meta = { status: number } & Record<string, unknown>;
+
 export abstract class BaseController<ErrorCode> {
   public static jsonResponse(
     res: express.Response,
@@ -10,10 +12,11 @@ export abstract class BaseController<ErrorCode> {
     return res.status(code).json({ message });
   }
 
-  public ok<T>(res: express.Response, dto?: T): express.Response {
-    if (dto) {
+  public ok(res: express.Response, payload?: unknown): express.Response {
+    if (payload) {
+      const meta: Meta = { status: 1 };
       res.type("application/json");
-      return res.status(200).json(dto);
+      return res.status(200).json({ payload, meta });
     } else {
       return res.sendStatus(200);
     }
@@ -78,9 +81,8 @@ export abstract class BaseController<ErrorCode> {
   }
 
   public fail(res: express.Response, errcode: ErrorCode): express.Response {
-    return res.json({
-      meta: { status: 0, errcode: errcode },
-    });
+    const meta: Meta = { status: 1, errcode };
+    return res.json({ meta });
   }
 
   public execValidation(
