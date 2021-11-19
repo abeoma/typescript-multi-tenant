@@ -1,7 +1,7 @@
 import * as express from "express";
 import { validationResult } from "express-validator";
 
-export abstract class BaseController {
+export abstract class BaseController<ErrorCode> {
   public static jsonResponse(
     res: express.Response,
     code: number,
@@ -77,9 +77,9 @@ export abstract class BaseController {
     );
   }
 
-  public fail(res: express.Response, error: Error | string): express.Response {
-    return res.status(500).json({
-      message: error.toString(),
+  public fail(res: express.Response, errcode: ErrorCode): express.Response {
+    return res.json({
+      meta: { status: 0, errcode: errcode },
     });
   }
 

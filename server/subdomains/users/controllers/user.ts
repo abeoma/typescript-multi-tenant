@@ -1,7 +1,9 @@
+import { AppExceptionCode } from "./../../../exceptions";
 import { UserApplicationService } from "./../services/user";
 import { BaseController } from "../../../shared/infra/http/models/BaseController";
 import express from "express";
 import { body } from "express-validator";
+import { AppException } from "../../../shared/core/AppException";
 
 export const validators = {
   createUser: [
@@ -11,7 +13,7 @@ export const validators = {
   ],
 };
 
-export class UserController extends BaseController {
+export class UserController extends BaseController<AppExceptionCode> {
   async getUsers(
     req: express.Request,
     res: express.Response
@@ -29,12 +31,19 @@ export class UserController extends BaseController {
 
     const { id, email, firstName, lastName } = req.body;
     const reg = req.services.registry;
-    new UserApplicationService(reg).registerUser({
-      id,
-      email,
-      firstName,
-      lastName,
-    });
+    try {
+      await new UserApplicationService(reg).registerUser({
+        id,
+        email,
+        firstName,
+        lastName,
+      });
+    } catch (e: unknown) {
+      if (e instanceof AppException) {
+        return this.fail(res, e.code);
+      }
+    }
+
     return this.ok(res);
   }
 }

@@ -1,10 +1,10 @@
 import { UserMap } from "./../mappers/userMap";
 import { IRegistry } from "../../../infra/database/interfaces/registry";
-import { ApplicationServiceException } from "../../../shared/core/ApplicationServiceException";
 import { UserFactory } from "./../domain/factories/user";
 import { User } from "../domain/user";
 import { UserDTO } from "../../../dtos";
 import generator from "generate-password";
+import { AppException } from "../../../shared/core/AppException";
 
 export class UserApplicationService {
   private reg: IRegistry;
@@ -36,13 +36,16 @@ export class UserApplicationService {
     });
     const user = UserFactory.newUser({ ...data, password });
     const repo = this.reg.userRepository();
-    if (await repo.fetchById(user.id)) {
-      throw new ApplicationServiceException(
-        `Already exists user id: ${user.id}`
-      );
+    if (await repo.fetchByEmail(user.email)) {
+      throw new AppException("email_already_exists");
     }
+
     await this.reg.withTransaction(async (transaction) => {
-      await repo.save(user, transaction);
+      try {
+        await repo.save(user, transaction);
+      } catch (e: unknown) {
+        throw new AppException("id_already_taken");
+      }
     });
   }
 }
