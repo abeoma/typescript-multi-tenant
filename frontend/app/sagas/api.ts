@@ -1,25 +1,52 @@
 import { call } from "@redux-saga/core/effects";
-import { fetch } from "cross-fetch";
 import endpoint from "./endpoint";
 import { User } from "../schema";
 import { SagaIterator } from "@redux-saga/types";
+import {
+  executeRequest,
+  GetArgs,
+  PostArgs,
+  RequestArgs,
+} from "../../lib/redux/middlewares/request";
 
-type Method = "GET" | "POST" | "PUT" | "DELETE";
-type RawResponse = Record<string, unknown>;
-
-async function requestRaw(
-  endpoint: string,
-  method: Method
-): Promise<RawResponse> {
-  const res = await fetch(endpoint, { method });
-  return res.json();
+async function requestInternal(args: RequestArgs) {
+  return await executeRequest(args, {
+    mode: "cors",
+    credentials: "same-origin",
+  });
 }
 
-function* requestGet(endpoint: string): SagaIterator {
-  const resJson: RawResponse = yield call(requestRaw, endpoint, "GET");
-  return resJson;
+async function requestGet(
+  endpoint: string,
+  { data }: Omit<GetArgs, "method" | "endpoint"> = {}
+) {
+  return await requestInternal({ method: "GET", endpoint, data });
+}
+
+async function requestPost(
+  endpoint: string,
+  props: Omit<PostArgs, "method" | "endpoint"> = {}
+) {
+  return await requestInternal({ method: "POST", endpoint, ...props });
 }
 
 export function* loadUserEntities(): SagaIterator<User[]> {
-  return yield call(requestGet, endpoint.users);
+  const res = yield call(requestGet, endpoint.users);
+  return res.payload;
+}
+
+export function* createNewUser({
+  id,
+  firstName,
+  lastName,
+  email,
+}: Pick<User, "firstName" | "lastName" | "email"> & { id?: string }) {
+  yield call(requestPost, endpoint.users, {
+    data: {
+      id: id || undefined,
+      firstName,
+      lastName,
+      email,
+    },
+  });
 }

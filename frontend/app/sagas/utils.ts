@@ -10,6 +10,7 @@ export function callSafe<Args extends unknown[]>(
     try {
       return yield call(saga, ...args);
     } catch (error) {
+      console.log(error);
       if (error instanceof ApiError) {
         if (error.errcode) {
           alert(`ApiError: ${error.errcode}`);
@@ -17,7 +18,6 @@ export function callSafe<Args extends unknown[]>(
       } else if (error instanceof Error) {
         alert(`FrontendError: ${error.name}`);
       }
-      console.log(error);
     }
   });
 }
