@@ -1,6 +1,6 @@
 import { all, fork } from "redux-saga/effects";
-import usersPageSage from "../containers/UsersPage/saga";
+import usersPageSaga from "../containers/UsersPage/saga";
 
 export default function* rootSaga() {
-  yield all([usersPageSage].map(fork));
+  yield all([usersPageSaga].map(fork));
 }

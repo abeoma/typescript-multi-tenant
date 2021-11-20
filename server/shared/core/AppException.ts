@@ -1,14 +1,9 @@
-import { ApplicationServiceException } from "./ApplicationServiceException";
+import { AppExceptionCode } from "./../../exceptions";
 
-export class UnexpectedException extends ApplicationServiceException {
-  public constructor(err: unknown) {
-    super("An unexpected error occurred.", err);
-    console.log("[AppError]: An unexpected error occurred");
-
-    console.error(err);
-  }
-
-  public static create(err: unknown): UnexpectedException {
-    return new UnexpectedException(err);
+export class AppException extends Error {
+  constructor(public code: AppExceptionCode, message?: string) {
+    super(message);
+    this.name = "AppException";
+    Object.setPrototypeOf(this, AppException.prototype);
   }
 }

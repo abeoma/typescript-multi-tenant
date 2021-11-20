@@ -1,3 +1,4 @@
+import { ApiErrorCode } from "./apiErrorCode";
 import { UserInterface } from "./user.interface";
 
-export { UserInterface };
+export { UserInterface, ApiErrorCode };

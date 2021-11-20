@@ -11,8 +11,8 @@ export class TypeOrmRegistry implements IRegistry {
   public async withTransaction(
     handler: (m: EntityManager) => void
   ): Promise<void> {
-    this.conn.transaction(async (transactionalEntityManager) => {
-      handler(transactionalEntityManager);
+    await this.conn.transaction(async (transactionalEntityManager) => {
+      await handler(transactionalEntityManager);
     });
   }
 

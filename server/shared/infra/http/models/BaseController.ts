@@ -1,6 +1,9 @@
 import * as express from "express";
+import { validationResult } from "express-validator";
 
-export abstract class BaseController {
+type Meta = { status: number } & Record<string, unknown>;
+
+export abstract class BaseController<ErrorCode> {
   public static jsonResponse(
     res: express.Response,
     code: number,
@@ -9,10 +12,11 @@ export abstract class BaseController {
     return res.status(code).json({ message });
   }
 
-  public ok<T>(res: express.Response, dto?: T): express.Response {
-    if (dto) {
+  public ok(res: express.Response, payload?: unknown): express.Response {
+    if (payload) {
+      const meta: Meta = { status: 1 };
       res.type("application/json");
-      return res.status(200).json(dto);
+      return res.status(200).json({ payload, meta });
     } else {
       return res.sendStatus(200);
     }
@@ -76,9 +80,21 @@ export abstract class BaseController {
     );
   }
 
-  public fail(res: express.Response, error: Error | string): express.Response {
-    return res.status(500).json({
-      message: error.toString(),
-    });
+  public fail(res: express.Response, errcode: ErrorCode): express.Response {
+    const meta: Meta = { status: 1, errcode };
+    return res.json({ meta });
+  }
+
+  public execValidation(
+    req: express.Request,
+    res: express.Response
+  ): void | express.Response {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        message: "InvalidRequestParams",
+        errors: errors.mapped(),
+      });
+    }
   }
 }

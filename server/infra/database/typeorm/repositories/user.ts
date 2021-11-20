@@ -5,7 +5,6 @@ import { UserMap } from "./../../../../subdomains/users/mappers/userMap";
 import { Connection, EntityManager, Repository } from "typeorm";
 import { IUserRepository } from "../../../../subdomains/users/repositories/user";
 import { UserModel } from "../models/tenant/user";
-import assert from "assert";
 
 export class UserRepository implements IUserRepository {
   private repo: Repository<UserModel>;
@@ -14,18 +13,14 @@ export class UserRepository implements IUserRepository {
     this.repo = conn.getRepository(UserModel);
   }
 
-  async fetchById(id: UserId): Promise<User> {
+  async fetchById(id: UserId): Promise<User | undefined> {
     const model = await this.repo.findOne(id.toString());
-    if (!!model === false) throw new Error("User not found.");
-    assert(model);
-    return modelToDomain(model);
+    return model ? modelToDomain(model) : undefined;
   }
 
-  async fetchByEmail(email: UserEmail): Promise<User> {
+  async fetchByEmail(email: UserEmail): Promise<User | undefined> {
     const model = await this.repo.findOne({ email: email.value });
-    if (!!model === false) throw new Error("User not found.");
-    assert(model);
-    return modelToDomain(model);
+    return model ? modelToDomain(model) : undefined;
   }
 
   async fetchList(): Promise<User[]> {
