@@ -4,7 +4,6 @@ type RquestData = { [k in string]: unknown };
 
 type CommonArgs = {
   endpoint: string;
-  raw?: boolean;
   successCode?: number;
 };
 
@@ -55,7 +54,7 @@ export async function executeRequest(
   args: RequestArgs,
   fetchOptions: RequestInit
 ): Promise<string | Record<string, unknown>> {
-  const { endpoint, raw, successCode = 200 } = args;
+  const { endpoint, successCode = 200 } = args;
 
   function preparedFetch(endpoint: string, options: RequestInit) {
     return fetch(endpoint, {
@@ -109,10 +108,7 @@ export async function executeRequest(
     throw new HttpStatusError(`Http status=${res.status}`, res);
   }
 
-  if (raw) {
-    return await res.text();
-  }
-  const jsonData = await res.json();
+  const jsonData: { meta: { status: number } } = await res.json();
 
   if (!jsonData.meta.status) {
     console.error(`APIStatus=${jsonData.meta.status}`, jsonData);
