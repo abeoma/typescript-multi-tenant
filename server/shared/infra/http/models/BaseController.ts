@@ -13,12 +13,12 @@ export abstract class BaseController<ErrorCode> {
   }
 
   public ok(res: express.Response, payload?: unknown): express.Response {
+    const meta: Meta = { status: 1 };
     if (payload) {
-      const meta: Meta = { status: 1 };
       res.type("application/json");
       return res.status(200).json({ payload, meta });
     } else {
-      return res.sendStatus(200);
+      return res.status(200).json({ meta });
     }
   }
 
@@ -81,7 +81,7 @@ export abstract class BaseController<ErrorCode> {
   }
 
   public fail(res: express.Response, errcode: ErrorCode): express.Response {
-    const meta: Meta = { status: 1, errcode };
+    const meta: Meta = { status: 0, errcode };
     return res.json({ meta });
   }
 
