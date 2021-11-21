@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   DataGrid,
   GridCellParams,
@@ -10,8 +10,11 @@ import {
 import { Panel } from "../../../lib/components/Panel";
 import { RootState } from "../../store";
 import { usersSelectors } from "./slice";
-import { Chip, styled } from "@mui/material";
+import { Button, Chip, styled } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { NameEditCell, RowActionCell, StatusEditCell } from "./Cells";
+import { UserModal } from "./UserModal";
+import { usersSagaActionCreator } from "./saga";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", minWidth: 300 },
@@ -55,15 +58,29 @@ const columns: GridColDef[] = [
 
 const Table = styled(DataGrid)({
   "& .MuiDataGrid-main": { backgroundColor: "#fff" },
+  "& .MuiDataGrid-overlay": { height: "100px !important" }, // "no rows" position
   "& .MuiDataGrid-footerContainer": { backgroundColor: "#fff" },
 });
 
 const UsersPage = () => {
-  const { users } = useSelector((state: RootState) => ({
+  const { users, openUserModal } = useSelector((state: RootState) => ({
     users: usersSelectors.selectAll(state),
+    openUserModal: state.users.openUserModal,
   }));
+
+  const dispatch = useDispatch();
+  const handleOpen = () => dispatch(usersSagaActionCreator.onOpenUserModal());
+  const handleClose = () => dispatch(usersSagaActionCreator.onOpenUserModal());
+
   return (
-    <Panel title={"Users"}>
+    <Panel
+      title={"Users"}
+      actions={[
+        <Button key={0} startIcon={<AddIcon />} onClick={handleOpen}>
+          Add
+        </Button>,
+      ]}
+    >
       <Table
         rows={users}
         columns={columns}
@@ -74,6 +91,12 @@ const UsersPage = () => {
         onCellClick={(_: GridCellParams, event: MuiEvent<React.MouseEvent>) => {
           event.defaultMuiPrevented = true;
         }}
+        onRowClick={() => console.log("click row")}
+      />
+      <UserModal
+        open={openUserModal}
+        handleClose={handleClose}
+        onSubmit={(v) => dispatch(usersSagaActionCreator.onClickSubmit(v))}
       />
     </Panel>
   );
