@@ -30,8 +30,13 @@ async function requestPost(
   return await requestInternal({ method: "POST", endpoint, ...props });
 }
 
+type ApiResult<Payload, Meta = Record<string, unknown>> = {
+  meta: Meta;
+  payload: Payload;
+};
+
 export function* loadUserEntities(): SagaIterator<User[]> {
-  const res = yield call(requestGet, endpoint.users);
+  const res: ApiResult<User[]> = yield call(requestGet, endpoint.users);
   return res.payload;
 }
 
