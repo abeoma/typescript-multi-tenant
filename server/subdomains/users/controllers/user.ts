@@ -9,6 +9,11 @@ export const validators = {
     body("firstName").exists(),
     body("lastName").exists(),
   ],
+  updateUser: [
+    body("email").isEmail(),
+    body("firstName").exists(),
+    body("lastName").exists(),
+  ],
 };
 
 export class UserController extends BaseController {
@@ -32,6 +37,29 @@ export class UserController extends BaseController {
     const reg = req.services.registry;
     try {
       await new UserApplicationService(reg).registerUser({
+        id,
+        email,
+        firstName,
+        lastName,
+      });
+      return this.ok(res);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async updateUser(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): Promise<unknown> {
+    this.execValidation(req, res);
+
+    const { id } = req.params;
+    const { email, firstName, lastName } = req.body;
+    const reg = req.services.registry;
+    try {
+      await new UserApplicationService(reg).updateUser({
         id,
         email,
         firstName,

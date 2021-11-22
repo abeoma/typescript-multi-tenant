@@ -15,4 +15,11 @@ userRouter.post(
     new UserController().createUser(req, res, next)
 );
 
+userRouter.put(
+  "/:id",
+  validators.updateUser,
+  (req: express.Request, res: express.Response, next: express.NextFunction) =>
+    new UserController().updateUser(req, res, next)
+);
+
 export { userRouter };
