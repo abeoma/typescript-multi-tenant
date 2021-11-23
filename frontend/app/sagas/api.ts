@@ -6,6 +6,7 @@ import {
   executeRequest,
   GetArgs,
   PostArgs,
+  PutArgs,
   RequestArgs,
 } from "../../lib/redux/middlewares/request";
 
@@ -30,6 +31,13 @@ async function requestPost(
   return await requestInternal({ method: "POST", endpoint, ...props });
 }
 
+async function requestPut(
+  endpoint: string,
+  props: Omit<PutArgs, "method" | "endpoint"> = {}
+) {
+  return await requestInternal({ method: "PUT", endpoint, ...props });
+}
+
 type ApiResult<Payload, Meta = Record<string, unknown>> = {
   meta: Meta;
   payload: Payload;
@@ -52,6 +60,21 @@ export function* createNewUser({
       firstName,
       lastName,
       email,
+    },
+  });
+}
+
+export function* updateUser({
+  id,
+  email,
+  firstName,
+  lastName,
+}: Omit<User, "isActive">) {
+  yield call(requestPut, endpoint.userDetail(id), {
+    data: {
+      email,
+      firstName,
+      lastName,
     },
   });
 }

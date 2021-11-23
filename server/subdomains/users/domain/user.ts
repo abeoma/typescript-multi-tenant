@@ -57,4 +57,13 @@ export class User extends AggregateRoot<UserProps> {
   public static create(props: UserProps, id: UniqueEntityID): User {
     return new User(props, id);
   }
+
+  public setEmail(email: UserEmail): void {
+    this.props.email = email;
+  }
+
+  public setName(firstName: string, lastName: string): void {
+    this.props.firstName = firstName;
+    this.props.lastName = lastName;
+  }
 }

@@ -9,11 +9,10 @@ import {
 } from "@mui/x-data-grid";
 import { Panel } from "../../../lib/components/Panel";
 import { RootState } from "../../store";
-import { usersSelectors } from "./slice";
+import { usersReducerActions, usersSelectors } from "./slice";
 import { Button, Chip, styled } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { NameEditCell, RowActionCell, StatusEditCell } from "./Cells";
-import { UserModal } from "./UserModal";
+import { UserEditModal, UserNewModal } from "./UserModal";
 import { usersSagaActionCreator } from "./saga";
 
 const columns: GridColDef[] = [
@@ -21,21 +20,17 @@ const columns: GridColDef[] = [
   {
     field: "firstName",
     headerName: "First name",
-    editable: true,
-    renderEditCell: NameEditCell,
     flex: 1,
   },
   {
     field: "lastName",
     headerName: "Last name",
-    editable: true,
-    renderEditCell: NameEditCell,
     flex: 1,
   },
   {
     field: "email",
     headerName: "Email",
-    minWidth: 200,
+    flex: 1,
   },
   {
     field: "isActive",
@@ -46,13 +41,6 @@ const columns: GridColDef[] = [
       ) : (
         <Chip size="small" label="Inactive" />
       ),
-    editable: true,
-    renderEditCell: StatusEditCell,
-  },
-  {
-    field: "",
-    disableClickEventBubbling: true,
-    renderCell: RowActionCell,
   },
 ].map((v) => ({ ...v, sortable: false }));
 
@@ -63,20 +51,28 @@ const Table = styled(DataGrid)({
 });
 
 const UsersPage = () => {
-  const { users, openUserModal } = useSelector((state: RootState) => ({
-    users: usersSelectors.selectAll(state),
-    openUserModal: state.users.openUserModal,
-  }));
+  const { users, openModal, selectedUser } = useSelector(
+    (state: RootState) => ({
+      users: usersSelectors.selectAll(state),
+      openModal: state.users.openModal,
+      selectedUser: state.users.selectedId
+        ? usersSelectors.selectById(state, state.users.selectedId)
+        : undefined,
+    })
+  );
 
   const dispatch = useDispatch();
-  const handleOpen = () => dispatch(usersSagaActionCreator.onOpenUserModal());
-  const handleClose = () => dispatch(usersSagaActionCreator.onOpenUserModal());
+  const handleClose = () => dispatch(usersReducerActions.closeModal());
 
   return (
     <Panel
       title={"Users"}
       actions={[
-        <Button key={0} startIcon={<AddIcon />} onClick={handleOpen}>
+        <Button
+          key={0}
+          startIcon={<AddIcon />}
+          onClick={() => dispatch(usersSagaActionCreator.onOpenNewModal())}
+        >
           Add
         </Button>,
       ]}
@@ -91,13 +87,26 @@ const UsersPage = () => {
         onCellClick={(_: GridCellParams, event: MuiEvent<React.MouseEvent>) => {
           event.defaultMuiPrevented = true;
         }}
-        onRowClick={() => console.log("click row")}
+        onRowClick={({ id }, ..._) =>
+          dispatch(
+            usersSagaActionCreator.onOpenEditModal({ userId: id.toString() })
+          )
+        }
       />
-      <UserModal
-        open={openUserModal}
-        handleClose={handleClose}
-        onSubmit={(v) => dispatch(usersSagaActionCreator.onClickSubmit(v))}
-      />
+      {selectedUser ? (
+        <UserEditModal
+          open={openModal}
+          user={selectedUser}
+          handleClose={handleClose}
+          onSubmit={(v) => dispatch(usersSagaActionCreator.onSaveEdit(v))}
+        />
+      ) : (
+        <UserNewModal
+          open={openModal}
+          handleClose={handleClose}
+          onSubmit={(v) => dispatch(usersSagaActionCreator.onSaveNew(v))}
+        />
+      )}
     </Panel>
   );
 };

@@ -11,7 +11,8 @@ interface UsersPageState extends EntityState<User> {
   page: number;
   sum: number;
   offset: number;
-  openUserModal: boolean;
+  openModal: boolean;
+  selectedId?: string;
 }
 
 const usersAdapter = createEntityAdapter<User>();
@@ -20,7 +21,8 @@ const initialState: UsersPageState = usersAdapter.getInitialState({
   page: 1,
   sum: 0,
   offset: 0,
-  openUserModal: false,
+  openModal: false,
+  selectedId: undefined,
 });
 
 const slice = createSlice({
@@ -30,11 +32,13 @@ const slice = createSlice({
     load(state, action: PayloadAction<{ users: User[] }>) {
       usersAdapter.setAll(state, action.payload.users);
     },
-    openUserModal(state) {
-      state.openUserModal = true;
+    openModal(state, action: PayloadAction<{ userId?: string }>) {
+      state.openModal = true;
+      state.selectedId = action.payload.userId;
     },
-    closeUserModal(state) {
-      state.openUserModal = false;
+    closeModal(state) {
+      state.openModal = false;
+      state.selectedId = undefined;
     },
   },
 });
