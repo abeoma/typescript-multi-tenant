@@ -3,7 +3,7 @@ import { validationResult } from "express-validator";
 
 type Meta = { status: number } & Record<string, unknown>;
 
-export abstract class BaseController<ErrorCode> {
+export abstract class BaseController {
   public static jsonResponse(
     res: express.Response,
     code: number,
@@ -78,11 +78,6 @@ export abstract class BaseController<ErrorCode> {
       429,
       message ? message : "Too many requests"
     );
-  }
-
-  public fail(res: express.Response, errcode: ErrorCode): express.Response {
-    const meta: Meta = { status: 0, errcode };
-    return res.json({ meta });
   }
 
   public execValidation(

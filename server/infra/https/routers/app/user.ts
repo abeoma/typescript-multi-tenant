@@ -11,8 +11,8 @@ userRouter.get("/", (req, res) => new UserController().getUsers(req, res));
 userRouter.post(
   "/",
   validators.createUser,
-  (req: express.Request, res: express.Response) =>
-    new UserController().createUser(req, res)
+  (req: express.Request, res: express.Response, next: express.NextFunction) =>
+    new UserController().createUser(req, res, next)
 );
 
 export { userRouter };
