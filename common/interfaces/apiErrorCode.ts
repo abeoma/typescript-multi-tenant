@@ -1,1 +1,5 @@
-export type ApiErrorCode = "email_already_exists" | "id_already_taken";
+export type ApiErrorCode =
+  | "id_already_taken"
+  | "invalid_id_format"
+  | "email_already_exists"
+  | "invalid_email_format";

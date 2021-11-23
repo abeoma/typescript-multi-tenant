@@ -65,14 +65,17 @@ export class UserApplicationService {
   }): Promise<void> {
     const repo = this.reg.userRepository();
 
-    const userEmail = UserEmail.create(email);
-    if (await repo.fetchByEmail(userEmail)) {
-      throw new AppException("email_already_exists");
-    }
-
     const userId = UserId.create(id);
     const user = await repo.fetchById(userId);
     assert(user);
+
+    const userEmail = UserEmail.create(email);
+    if (!user.email.equals(userEmail)) {
+      const found = await repo.fetchByEmail(userEmail);
+      if (found) {
+        throw new AppException("email_already_exists");
+      }
+    }
 
     user.setEmail(userEmail);
     user.setName(firstName, lastName);
