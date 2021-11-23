@@ -1,3 +1,4 @@
+import { AppException } from "../../../shared/core/AppException";
 import { ValueObject } from "../../../shared/domain/ValueObject";
 
 export type UserEmailProps = {
@@ -27,7 +28,7 @@ export class UserEmail extends ValueObject<UserEmailProps> {
 
   public static create(email: string): UserEmail {
     if (!this.isValidEmail(email)) {
-      throw new Error("Email address is not valid");
+      throw new AppException("invalid_email_format", email);
     }
     return new UserEmail({ value: this.format(email) });
   }

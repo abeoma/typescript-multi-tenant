@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { AppException } from "../core/AppException";
 import { Guard } from "../core/Guard";
 import { Identifier } from "./Identifier";
 
@@ -11,7 +12,7 @@ export class UniqueEntityID extends Identifier<string> {
   private validate(r: RegExp) {
     const result = Guard.againstRegex(r, this.toString());
     if (!result.succeeded) {
-      throw new Error(result.message);
+      throw new AppException("invalid_id_format", result.message);
     }
   }
 }
