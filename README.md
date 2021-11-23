@@ -1,4 +1,38 @@
-# BARASU
+# Fullstack Typescript Multi-Tenant Web App Sample
+
+![readme-top](doc/readme-top.png)
+
+## Technologies & Tools
+
+### Frontend
+
+React  
+Redux/Redux-Saga  
+Material-UI  
+React-Hook-Form  
+Webpack
+
+### Backend
+
+Node/Express  
+Mysql/TypeORM
+
+### Others
+
+Docker
+
+## Get started
+
+```
+# Build server
+docker compose up app
+
+# Setup seed data
+yarn server:cli setup-dev-tenant
+
+# Run frontend
+yarn frontend start
+```
 
 ## Developement Environment
 
@@ -15,19 +49,6 @@ https://github.com/nodenv/nodenv
 ```
 > cat .node-version
 16.5.0
-```
-
-## Getting started
-
-```
-# Build server
-docker compose up app
-
-# Setup seed data
-yarn server:cli setup-dev-tenant
-
-# Run frontend
-yarn frontend start
 ```
 
 ## Add package
