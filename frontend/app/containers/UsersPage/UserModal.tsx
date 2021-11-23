@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Box,
   Button,
@@ -38,19 +38,49 @@ const schema = yup.object({
   lastName: yup.string().required("Required."),
 });
 
-type Inputs = {
-  id?: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-};
-
-type Props = {
+type CommonProps = {
   open: boolean;
   handleClose: () => void;
-  onSubmit: (v: Omit<User, "id" | "isActive"> & { id?: string }) => void;
 };
-export const UserModal = ({ open, handleClose, onSubmit }: Props) => {
+
+const ModalInternal = ({
+  open,
+  handleClose,
+  title,
+  children,
+}: CommonProps & {
+  title: string;
+  children: ReactNode;
+}) => {
+  return (
+    <Modal open={open} onClose={handleClose}>
+      <Wrapper>
+        <Container>
+          <Stack spacing={2}>
+            <Typography component="h2" variant="h6">
+              {title}
+            </Typography>
+            {children}
+          </Stack>
+        </Container>
+      </Wrapper>
+    </Modal>
+  );
+};
+
+const SaveButton = ({ onClick }: { onClick: () => void }) => (
+  <Button color="primary" variant="contained" size="large" onClick={onClick}>
+    Save
+  </Button>
+);
+
+type Inputs = Omit<User, "id" | "isActive"> & { id?: string };
+export const UserNewModal = ({
+  onSubmit,
+  ...modalProps
+}: CommonProps & {
+  onSubmit: (v: Inputs) => void;
+}) => {
   const {
     register,
     handleSubmit,
@@ -58,47 +88,77 @@ export const UserModal = ({ open, handleClose, onSubmit }: Props) => {
   } = useForm<Inputs>({ resolver: yupResolver(schema) });
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Wrapper>
-        <Container>
-          <Stack spacing={2}>
-            <Typography component="h2" variant="h6">
-              Create New User
-            </Typography>
-            <TextField label="ID" {...register("id")} />
-            <TextField
-              required
-              label="Email"
-              type="email"
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              {...register("email")}
-            />
-            <TextField
-              required
-              label="First Name"
-              error={!!errors.firstName}
-              helperText={errors.firstName?.message}
-              {...register("firstName")}
-            />
-            <TextField
-              required
-              label="Last Name"
-              error={!!errors.lastName}
-              helperText={errors.lastName?.message}
-              {...register("lastName")}
-            />
-            <Button
-              color="primary"
-              variant="contained"
-              size="large"
-              onClick={handleSubmit(onSubmit)}
-            >
-              Submit
-            </Button>
-          </Stack>
-        </Container>
-      </Wrapper>
-    </Modal>
+    <ModalInternal {...modalProps} title="Create New User">
+      <TextField label="ID" {...register("id")} />
+      <TextField
+        required
+        label="Email"
+        type="email"
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        {...register("email")}
+      />
+      <TextField
+        required
+        label="First Name"
+        error={!!errors.firstName}
+        helperText={errors.firstName?.message}
+        {...register("firstName")}
+      />
+      <TextField
+        required
+        label="Last Name"
+        error={!!errors.lastName}
+        helperText={errors.lastName?.message}
+        {...register("lastName")}
+      />
+      <SaveButton onClick={handleSubmit(onSubmit)} />
+    </ModalInternal>
+  );
+};
+
+type EditModalInputs = Omit<User, "id" | "isActive">;
+export const UserEditModal = ({
+  user,
+  onSubmit,
+  ...modalProps
+}: CommonProps & {
+  user: User;
+  onSubmit: (v: EditModalInputs) => void;
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EditModalInputs>({ resolver: yupResolver(schema) });
+
+  return (
+    <ModalInternal {...modalProps} title="Edit User">
+      <TextField defaultValue={user.id} disabled={true} label="ID" />
+      <TextField
+        defaultValue={user.email}
+        required
+        label="Email"
+        type="email"
+        {...register("email")}
+      />
+      <TextField
+        defaultValue={user.firstName}
+        required
+        label="First Name"
+        error={!!errors.firstName}
+        helperText={errors.firstName?.message}
+        {...register("firstName")}
+      />
+      <TextField
+        defaultValue={user.lastName}
+        required
+        label="Last Name"
+        error={!!errors.lastName}
+        helperText={errors.lastName?.message}
+        {...register("lastName")}
+      />
+      <SaveButton onClick={handleSubmit(onSubmit)} />
+    </ModalInternal>
   );
 };
