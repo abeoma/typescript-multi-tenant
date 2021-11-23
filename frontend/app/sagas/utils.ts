@@ -1,5 +1,12 @@
 import { SagaIterator } from "@redux-saga/core";
-import { call, CallEffect, cancel } from "redux-saga/effects";
+import {
+  call,
+  CallEffect,
+  cancel,
+  ForkEffect,
+  takeLeading,
+} from "redux-saga/effects";
+import { Action, ActionCreator } from "typescript-fsa";
 import { ApiError } from "../../lib/redux/middlewares/request";
 
 const handleError = (error: unknown) => {
@@ -13,8 +20,9 @@ const handleError = (error: unknown) => {
   }
 };
 
-export function callSafe<Args extends unknown[]>(
+function callSafeInternal<Args extends unknown[]>(
   saga: (...args: Args) => unknown,
+  cancelIfError: boolean,
   ...args: Args
 ): CallEffect {
   return call(function* (): SagaIterator {
@@ -22,7 +30,23 @@ export function callSafe<Args extends unknown[]>(
       return yield call(saga, ...args);
     } catch (error) {
       handleError(error);
-      yield cancel();
+      if (cancelIfError) yield cancel();
     }
+  });
+}
+
+export function callSafe<Args extends unknown[]>(
+  saga: (...args: Args) => unknown,
+  ...args: Args
+): CallEffect {
+  return callSafeInternal(saga, true, ...args);
+}
+
+export function takeLeadingSafe<Payload>(
+  actionCreator: ActionCreator<Payload>,
+  saga: (action: Action<Payload>) => void
+): ForkEffect {
+  return takeLeading(actionCreator, function* _(action: Action<Payload>) {
+    yield callSafeInternal(saga, false, action);
   });
 }
