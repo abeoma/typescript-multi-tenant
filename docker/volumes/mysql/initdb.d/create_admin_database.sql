@@ -1,3 +1,4 @@
 CREATE DATABASE IF NOT EXISTS admin;
 CREATE DATABASE IF NOT EXISTS test_admin;
-GRANT ALL PRIVILEGES ON *.* TO 'app_user'@'%' IDENTIFIED BY 'secret';
+CREATE USER 'app_user'@'%' IDENTIFIED BY 'secret';
+GRANT ALL PRIVILEGES ON *.* TO 'app_user'@'%';
