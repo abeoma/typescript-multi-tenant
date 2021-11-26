@@ -1,80 +1,80 @@
-import { call } from "@redux-saga/core/effects";
-import endpoint from "./endpoint";
-import { User } from "../schema";
-import { SagaIterator } from "@redux-saga/types";
 import {
-  executeRequest,
   GetArgs,
   PostArgs,
   PutArgs,
   RequestArgs,
+  executeRequest,
 } from "../../lib/redux/middlewares/request";
+import { SagaIterator } from "@redux-saga/types";
+import { User } from "../schema";
+import { apiEndopint } from "./endpoint";
+import { call } from "@redux-saga/core/effects";
 
-async function requestInternal(args: RequestArgs) {
-  return await executeRequest(args, {
+const requestInternal = (args: RequestArgs) => {
+  return executeRequest(args, {
     mode: "cors",
     credentials: "same-origin",
   });
-}
+};
 
-async function requestGet(
+const requestGet = (
   endpoint: string,
   { data }: Omit<GetArgs, "method" | "endpoint"> = {}
-) {
-  return await requestInternal({ method: "GET", endpoint, data });
-}
+) => {
+  return requestInternal({ method: "GET", endpoint, data });
+};
 
-async function requestPost(
+const requestPost = (
   endpoint: string,
   props: Omit<PostArgs, "method" | "endpoint"> = {}
-) {
-  return await requestInternal({ method: "POST", endpoint, ...props });
-}
+) => {
+  return requestInternal({ method: "POST", endpoint, ...props });
+};
 
-async function requestPut(
+const requestPut = (
   endpoint: string,
   props: Omit<PutArgs, "method" | "endpoint"> = {}
-) {
-  return await requestInternal({ method: "PUT", endpoint, ...props });
-}
+) => {
+  return requestInternal({ method: "PUT", endpoint, ...props });
+};
 
 type ApiResult<Payload, Meta = Record<string, unknown>> = {
   meta: Meta;
   payload: Payload;
 };
 
-export function* loadUserEntities(): SagaIterator<User[]> {
-  const res: ApiResult<User[]> = yield call(requestGet, endpoint.users);
+export const loadUserEntities = function* (): SagaIterator<User[]> {
+  const res: ApiResult<User[]> = yield call(requestGet, apiEndopint.users);
   return res.payload;
-}
+};
 
-export function* createNewUser({
+export const createNewUser = function* ({
   id,
   firstName,
   lastName,
   email,
 }: Pick<User, "firstName" | "lastName" | "email"> & { id?: string }) {
-  yield call(requestPost, endpoint.users, {
+  yield call(requestPost, apiEndopint.users, {
     data: {
-      id: id || undefined,
+      id,
       firstName,
       lastName,
       email,
     },
   });
-}
+};
 
-export function* updateUser({
+export const updateUser = function* ({
   id,
   email,
   firstName,
   lastName,
 }: Omit<User, "isActive">) {
-  yield call(requestPut, endpoint.userDetail(id), {
+  yield call(requestPut, apiEndopint.userDetail(id), {
     data: {
       email,
       firstName,
       lastName,
     },
   });
-}
+};

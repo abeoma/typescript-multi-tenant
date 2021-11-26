@@ -1,8 +1,8 @@
-import { TenantRepository } from "./tenantRepository";
+import { Connection } from "typeorm";
+import { ITenantRepository } from "../../../../subdomains/tenants/repos/tenantRepository";
 import { Tenant } from "../../../../subdomains/tenants/domain/tenant";
 import { TenantMap } from "./../../../../subdomains/tenants/mappers/tenantMapper";
-import { ITenantRepository } from "../../../../subdomains/tenants/repos/tenantRepository";
-import { Connection } from "typeorm";
+import { TenantRepository } from "./tenantRepository";
 
 export class AdminRegistry {
   private repo: ITenantRepository;
@@ -19,12 +19,12 @@ export class AdminRegistry {
     await this.repo.save(tenant);
   }
 
-  async fetchById(id: string): Promise<Tenant> {
+  fetchById(id: string): Promise<Tenant> {
     const tenant = TenantMap.toDomain({ id });
     return this.repo.fetchById(tenant.id);
   }
 
-  async fetchAll(): Promise<Tenant[]> {
-    return await this.repo.fetchAll();
+  fetchAll(): Promise<Tenant[]> {
+    return this.repo.fetchAll();
   }
 }

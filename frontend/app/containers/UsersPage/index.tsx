@@ -1,5 +1,4 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Chip, styled } from "@mui/material";
 import {
   DataGrid,
   GridCellParams,
@@ -7,12 +6,13 @@ import {
   GridRenderCellParams,
   MuiEvent,
 } from "@mui/x-data-grid";
-import { Panel } from "../../../lib/components/Panel";
-import { RootState } from "../../store";
-import { usersReducerActions, usersSelectors } from "./slice";
-import { Button, Chip, styled } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { UserEditModal, UserNewModal } from "./UserModal";
+import { useDispatch, useSelector } from "react-redux";
+import { usersReducerActions, usersSelectors } from "./slice";
+import AddIcon from "@mui/icons-material/Add";
+import { Panel } from "../../../lib/components/Panel";
+import React from "react";
+import { RootState } from "../../store";
 import { usersSagaActionCreator } from "./saga";
 
 const columns: GridColDef[] = [
@@ -46,10 +46,12 @@ const columns: GridColDef[] = [
 
 const Table = styled(DataGrid)({
   "& .MuiDataGrid-main": { backgroundColor: "#fff" },
-  "& .MuiDataGrid-overlay": { height: "100px !important" }, // "no rows" position
+  // "No rows" position
+  "& .MuiDataGrid-overlay": { height: "100px !important" },
   "& .MuiDataGrid-footerContainer": { backgroundColor: "#fff" },
 });
 
+// eslint-disable-next-line max-lines-per-function
 const UsersPage = () => {
   const { users, openModal, selectedUser } = useSelector(
     (state: RootState) => ({
@@ -57,7 +59,7 @@ const UsersPage = () => {
       openModal: state.users.openModal,
       selectedUser: state.users.selectedId
         ? usersSelectors.selectById(state, state.users.selectedId)
-        : undefined,
+        : null,
     })
   );
 

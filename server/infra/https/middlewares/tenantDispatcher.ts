@@ -1,11 +1,11 @@
-import { TypeOrmRegistry } from "./../../database/typeorm/repositories/registry";
-import assert from "assert";
-import express from "express";
-import { AdminRegistry } from "../../database/typeorm/adminRepos/adminRegistry";
 import {
   createAdminDatabaseConnection,
   createTenantDatabaseConnection,
 } from "../../database/typeorm/utils";
+import { AdminRegistry } from "../../database/typeorm/adminRepos/adminRegistry";
+import { TypeOrmRegistry } from "./../../database/typeorm/repositories/registry";
+import assert from "assert";
+import express from "express";
 
 export const TENANT_DB_CONNECTION = "TENANT_DB_CONNECTION";
 
@@ -14,7 +14,7 @@ export const tenantDispatcher = async (
   res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
-  // const tenantId = req.headers.host?.split(".")[0];
+  // ADD: const tenantId = req.headers.host?.split(".")[0];
   const tenantId = "barasu-dev";
   assert(tenantId);
   const adminConn = await createAdminDatabaseConnection();

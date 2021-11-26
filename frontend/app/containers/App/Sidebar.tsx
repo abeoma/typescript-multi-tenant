@@ -1,17 +1,17 @@
-import React from "react";
 import {
   Divider,
   Drawer,
   IconButton,
-  styled,
-  Toolbar,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Toolbar,
+  styled,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { NavLink } from "react-router-dom";
+import React from "react";
 
 export const DRAWER_WIDTH = 240;
 

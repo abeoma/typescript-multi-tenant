@@ -1,7 +1,7 @@
-import webpack from "webpack";
 import HtmlWebPackPlugin from "html-webpack-plugin";
-import path from "path";
 import merge from "webpack-merge";
+import path from "path";
+import webpack from "webpack";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -11,7 +11,7 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 });
 
 const typescriptRule = {
-    test: /\.tsx?$/,
+    test: /\.tsx?$/u,
     use: {
       loader: "ts-loader",
     },
@@ -20,17 +20,17 @@ const typescriptRule = {
       path.resolve(__dirname, "../lib"),
       path.resolve(__dirname, "../../node_modules/@barasu/common"),
     ],
-    exclude: [/\.test\.tsx?$/],
+    exclude: [/\.test\.tsx?$/u],
   },
   jsRule = {
-    test: /\.js$/,
-    exclude: /node_modules/,
+    test: /\.js$/u,
+    exclude: /node_modules/u,
     use: {
       loader: "babel-loader",
     },
   },
   cssRule = {
-    test: /\.css$/,
+    test: /\.css$/u,
     use: ["css-loader"],
     include: [path.resolve(__dirname, "node_modules/semantic-ui-css")],
   };
@@ -51,7 +51,7 @@ const baseConfig: webpack.Configuration = {
     splitChunks: {
       cacheGroups: {
         vendor: {
-          test: /node_modules/,
+          test: /node_modules/u,
           name: "vendor",
           chunks: "initial" as const,
           enforce: true,
@@ -69,7 +69,8 @@ const baseConfig: webpack.Configuration = {
     modules: ["node_modules"],
     alias: {
       "date-fns": "date-fns/esm",
-      lodash: "lodash-es", // Trailing $ is needed because lodash-es does not support lodash/fp.
+      // Trailing $ is needed because lodash-es does not support lodash/fp.
+      lodash: "lodash-es",
     },
     symlinks: false,
   },

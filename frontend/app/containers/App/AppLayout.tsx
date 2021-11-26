@@ -1,4 +1,3 @@
-import React, { MouseEvent, useState } from "react";
 import {
   AppBar,
   AppBarProps,
@@ -10,14 +9,15 @@ import {
   IconButtonProps,
   Menu,
   MenuItem,
-  styled,
   Toolbar,
   Typography,
+  styled,
 } from "@mui/material";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MenuIcon from "@mui/icons-material/Menu";
 import { DRAWER_WIDTH, Sidebar, SidebarItem } from "./Sidebar";
+import React, { MouseEvent, useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const FlexBox = styled(Box)({
   display: "flex",
@@ -65,6 +65,7 @@ const MainContainer = styled(Container)(({ theme }) => ({
 
 type Props = { children: React.ReactNode; sidebarItems: SidebarItem[] };
 
+// eslint-disable-next-line max-lines-per-function
 const AppLayout = ({ children, sidebarItems }: Props) => {
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => {

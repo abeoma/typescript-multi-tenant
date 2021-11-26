@@ -1,18 +1,18 @@
 import {
-  createEntityAdapter,
-  createSlice,
   EntityState,
   PayloadAction,
+  createEntityAdapter,
+  createSlice,
 } from "@reduxjs/toolkit";
-import { User } from "../../schema";
 import { RootState } from "../../store";
+import { User } from "../../schema";
 
 interface UsersPageState extends EntityState<User> {
   page: number;
   sum: number;
   offset: number;
   openModal: boolean;
-  selectedId?: string;
+  selectedId?: string | null;
 }
 
 const usersAdapter = createEntityAdapter<User>();
@@ -22,7 +22,6 @@ const initialState: UsersPageState = usersAdapter.getInitialState({
   sum: 0,
   offset: 0,
   openModal: false,
-  selectedId: undefined,
 });
 
 const slice = createSlice({
@@ -38,7 +37,7 @@ const slice = createSlice({
     },
     closeModal(state) {
       state.openModal = false;
-      state.selectedId = undefined;
+      state.selectedId = null;
     },
   },
 });

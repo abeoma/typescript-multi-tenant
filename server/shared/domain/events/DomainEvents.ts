@@ -1,5 +1,6 @@
-import { IDomainEvent } from "./IDomainEvent";
+/* eslint-disable no-magic-numbers */
 import { AggregateRoot } from "../AggregateRoot";
+import { IDomainEvent } from "./IDomainEvent";
 import { UniqueEntityID } from "../UniqueEntityID";
 import assert from "assert";
 
@@ -9,6 +10,7 @@ export class DomainEvents {
   private static handlersMap: {
     [key: string]: EventHandler[];
   } = {};
+
   private static markedAggregates: AggregateRoot<unknown>[] = [];
 
   /**
@@ -22,7 +24,7 @@ export class DomainEvents {
   public static markAggregateForDispatch(
     aggregate: AggregateRoot<unknown>
   ): void {
-    const aggregateFound = !!this.findMarkedAggregateByID(aggregate.id);
+    const aggregateFound = Boolean(this.findMarkedAggregateByID(aggregate.id));
 
     if (!aggregateFound) {
       this.markedAggregates.push(aggregate);

@@ -1,31 +1,35 @@
-import { SagaIterator } from "@redux-saga/core";
+import { Action, ActionCreator } from "typescript-fsa";
 import {
-  call,
   CallEffect,
-  cancel,
   ForkEffect,
+  call,
+  cancel,
   takeLeading,
 } from "redux-saga/effects";
-import { Action, ActionCreator } from "typescript-fsa";
 import { ApiError } from "../../lib/redux/middlewares/request";
+import { SagaIterator } from "@redux-saga/core";
 
 const handleError = (error: unknown) => {
+  // eslint-disable-next-line no-console
   console.log(error);
   if (error instanceof ApiError) {
     if (error.errcode) {
+      // eslint-disable-next-line no-alert
       alert(`ApiError: ${error.errcode}`);
     }
   } else if (error instanceof Error) {
+    // eslint-disable-next-line no-alert
     alert(`FrontendError: ${error.name}`);
   }
 };
 
-function callSafeInternal<Args extends unknown[]>(
+const callSafeInternal = <Args extends unknown[]>(
   saga: (...args: Args) => unknown,
   cancelIfError: boolean,
   ...args: Args
-): CallEffect {
-  return call(function* (): SagaIterator {
+): CallEffect => {
+  // eslint-disable-next-line consistent-return
+  return call(function* execCallSafe(): SagaIterator {
     try {
       return yield call(saga, ...args);
     } catch (error) {
@@ -33,20 +37,20 @@ function callSafeInternal<Args extends unknown[]>(
       if (cancelIfError) yield cancel();
     }
   });
-}
+};
 
-export function callSafe<Args extends unknown[]>(
+export const callSafe = <Args extends unknown[]>(
   saga: (...args: Args) => unknown,
   ...args: Args
-): CallEffect {
+): CallEffect => {
   return callSafeInternal(saga, true, ...args);
-}
+};
 
-export function takeLeadingSafe<Payload>(
+export const takeLeadingSafe = <Payload>(
   actionCreator: ActionCreator<Payload>,
   saga: (action: Action<Payload>) => void
-): ForkEffect {
+): ForkEffect => {
   return takeLeading(actionCreator, function* _(action: Action<Payload>) {
     yield callSafeInternal(saga, false, action);
   });
-}
+};

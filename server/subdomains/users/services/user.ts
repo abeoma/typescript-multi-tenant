@@ -1,13 +1,13 @@
-import { UserEmail } from "./../domain/userEmail";
-import { UserMap } from "./../mappers/userMap";
+import { AppException } from "../../../shared/core/AppException";
 import { IRegistry } from "../../../infra/database/interfaces/registry";
-import { UserFactory } from "./../domain/factories/user";
 import { User } from "../domain/user";
 import { UserDTO } from "../../../dtos";
-import generator from "generate-password";
-import { AppException } from "../../../shared/core/AppException";
+import { UserEmail } from "./../domain/userEmail";
+import { UserFactory } from "./../domain/factories/user";
 import { UserId } from "../domain/userId";
+import { UserMap } from "./../mappers/userMap";
 import assert from "assert";
+import generator from "generate-password";
 
 export class UserApplicationService {
   private reg: IRegistry;
@@ -33,8 +33,9 @@ export class UserApplicationService {
       symbols: true,
       lowercase: true,
       uppercase: true,
+      // Only use !@#$%^&*
       // eslint-disable-next-line quotes
-      exclude: '()+_-=}{[]|:;"/?.><,`~', // only use !@#$%^&*
+      exclude: '()+_-=}{[]|:;"/?.><,`~',
       strict: true,
     });
     const user = UserFactory.newUser({ ...data, password });
@@ -57,19 +58,14 @@ export class UserApplicationService {
     email,
     firstName,
     lastName,
-  }: {
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-  }): Promise<void> {
+  }: Omit<UserDTO, "isActive">): Promise<void> {
     const repo = this.reg.userRepository();
 
-    const userId = UserId.create(id);
+    const userEmail = UserEmail.create(email),
+      userId = UserId.create(id);
+
     const user = await repo.fetchById(userId);
     assert(user);
-
-    const userEmail = UserEmail.create(email);
     if (!user.email.equals(userEmail)) {
       const found = await repo.fetchByEmail(userEmail);
       if (found) {

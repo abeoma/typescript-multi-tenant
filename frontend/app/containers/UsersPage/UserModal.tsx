@@ -1,18 +1,18 @@
-import React, { ReactNode } from "react";
+import * as yup from "yup";
 import {
   Box,
   Button,
   Container,
   Modal,
   Stack,
-  styled,
   TextField,
   Typography,
+  styled,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import React, { ReactNode } from "react";
 import { User } from "../../schema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const Wrapper = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -94,21 +94,21 @@ export const UserNewModal = ({
         required
         label="Email"
         type="email"
-        error={!!errors.email}
+        error={Boolean(errors.email)}
         helperText={errors.email?.message}
         {...register("email")}
       />
       <TextField
         required
         label="First Name"
-        error={!!errors.firstName}
+        error={Boolean(errors.firstName)}
         helperText={errors.firstName?.message}
         {...register("firstName")}
       />
       <TextField
         required
         label="Last Name"
-        error={!!errors.lastName}
+        error={Boolean(errors.lastName)}
         helperText={errors.lastName?.message}
         {...register("lastName")}
       />
@@ -146,7 +146,7 @@ export const UserEditModal = ({
         defaultValue={user.firstName}
         required
         label="First Name"
-        error={!!errors.firstName}
+        error={Boolean(errors.firstName)}
         helperText={errors.firstName?.message}
         {...register("firstName")}
       />
@@ -154,7 +154,7 @@ export const UserEditModal = ({
         defaultValue={user.lastName}
         required
         label="Last Name"
-        error={!!errors.lastName}
+        error={Boolean(errors.lastName)}
         helperText={errors.lastName?.message}
         {...register("lastName")}
       />

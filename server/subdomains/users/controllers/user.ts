@@ -1,7 +1,7 @@
-import { UserApplicationService } from "./../services/user";
 import { BaseController } from "../../../shared/infra/http/models/BaseController";
-import express from "express";
+import { UserApplicationService } from "./../services/user";
 import { body } from "express-validator";
+import express from "express";
 
 export const validators = {
   createUser: [
@@ -30,7 +30,7 @@ export class UserController extends BaseController {
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
-  ): Promise<unknown> {
+  ): Promise<express.Response | void> {
     this.execValidation(req, res);
 
     const { id, email, firstName, lastName } = req.body;
@@ -42,10 +42,10 @@ export class UserController extends BaseController {
         firstName,
         lastName,
       });
-      return this.ok(res);
     } catch (e) {
       next(e);
     }
+    return this.ok(res);
   }
 
   async updateUser(
@@ -65,9 +65,9 @@ export class UserController extends BaseController {
         firstName,
         lastName,
       });
-      return this.ok(res);
     } catch (e) {
       next(e);
     }
+    return this.ok(res);
   }
 }

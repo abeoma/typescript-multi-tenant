@@ -1,11 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
 import { AppException } from "../core/AppException";
 import { Guard } from "../core/Guard";
 import { Identifier } from "./Identifier";
+import { v4 as uuidv4 } from "uuid";
 
 export class UniqueEntityID extends Identifier<string> {
-  constructor(id?: string, pattern = /^[a-zA-Z0-9_-]{4,64}$/) {
-    super(id ? id : uuidv4());
+  constructor(id?: string, pattern = /^[a-zA-Z0-9_-]{4,64}$/u) {
+    super(id || uuidv4());
     this.validate(pattern);
   }
 

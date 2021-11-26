@@ -1,9 +1,9 @@
 import { Connection, Repository } from "typeorm";
-import { TenantModel } from "../models/admin/tenant";
 import { ITenantRepository } from "../../../../subdomains/tenants/repos/tenantRepository";
-import { TenantId } from "../../../../subdomains/tenants/domain/tenantId";
 import { Tenant } from "../../../../subdomains/tenants/domain/tenant";
+import { TenantId } from "../../../../subdomains/tenants/domain/tenantId";
 import { TenantMap } from "../../../../subdomains/tenants/mappers/tenantMapper";
+import { TenantModel } from "../models/admin/tenant";
 
 export class TenantRepository implements ITenantRepository {
   private repo: Repository<TenantModel>;
@@ -14,6 +14,7 @@ export class TenantRepository implements ITenantRepository {
 
   async exists(id: TenantId): Promise<boolean> {
     const count = await this.repo.count({ id: id.toString() });
+    // eslint-disable-next-line no-magic-numbers
     return count === 1;
   }
 
@@ -31,6 +32,6 @@ export class TenantRepository implements ITenantRepository {
   async save(tenant: Tenant): Promise<void> {
     const data = TenantMap.toPersistence(tenant);
     const model = this.repo.create(data);
-    this.repo.save(model);
+    await this.repo.save(model);
   }
 }
