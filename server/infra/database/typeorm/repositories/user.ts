@@ -1,10 +1,10 @@
 import { Connection, EntityManager, Repository } from "typeorm";
-import { IUserRepository } from "../../../../modules/user/repositories/user";
 import { User } from "./../../../../modules/user/domain/user";
 import { UserEmail } from "../../../../modules/user/domain/userEmail";
 import { UserId } from "../../../../modules/user/domain/userId";
 import { UserMap } from "./../../../../modules/user/mappers/userMap";
 import { UserModel } from "../models/tenant/user";
+import { UserRepository } from "../../../../modules/user/repositories/user.repository";
 
 const modelToDomain = (model: UserModel): User => {
   return UserMap.toDomain({
@@ -16,7 +16,7 @@ const modelToDomain = (model: UserModel): User => {
   });
 };
 
-export class UserRepository implements IUserRepository {
+export class UserRepositoryImpl implements UserRepository {
   private repo: Repository<UserModel>;
 
   constructor(conn: Connection) {

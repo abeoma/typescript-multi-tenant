@@ -1,4 +1,4 @@
-import { UserApplicationService } from "./../services/user";
+import { UserApplicationService } from "./../services/user.service";
 import { body } from "express-validator";
 import { catchAsync } from "./../../../infra/https/utils/catchAsync";
 import { execValidation } from "./../../../infra/https/middlewares/validator";

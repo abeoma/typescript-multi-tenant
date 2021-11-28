@@ -1,6 +1,6 @@
-import { IUserRepository } from "../../../modules/user/repositories/user";
+import { UserRepository } from "../../../modules/user/repositories/user.repository";
 
-export interface IRegistry {
+export interface Registry {
   withTransaction(handler: (transaction: unknown) => void): Promise<void>;
-  userRepository(): IUserRepository;
+  userRepository(): UserRepository;
 }

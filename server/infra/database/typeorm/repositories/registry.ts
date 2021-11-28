@@ -1,8 +1,8 @@
 import { Connection, EntityManager } from "typeorm";
-import { IRegistry } from "../../interfaces/registry";
-import { UserRepository } from "./user";
+import { Registry } from "../../interfaces/registry";
+import { UserRepositoryImpl } from "./user";
 
-export class TypeOrmRegistry implements IRegistry {
+export class TypeOrmRegistry implements Registry {
   private conn: Connection;
 
   constructor(conn: Connection) {
@@ -17,7 +17,7 @@ export class TypeOrmRegistry implements IRegistry {
     });
   }
 
-  public userRepository(): UserRepository {
-    return new UserRepository(this.conn);
+  public userRepository(): UserRepositoryImpl {
+    return new UserRepositoryImpl(this.conn);
   }
 }
