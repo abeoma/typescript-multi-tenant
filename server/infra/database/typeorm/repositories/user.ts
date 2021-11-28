@@ -1,9 +1,9 @@
 import { Connection, EntityManager, Repository } from "typeorm";
-import { IUserRepository } from "../../../../subdomains/users/repositories/user";
-import { User } from "./../../../../subdomains/users/domain/user";
-import { UserEmail } from "../../../../subdomains/users/domain/userEmail";
-import { UserId } from "../../../../subdomains/users/domain/userId";
-import { UserMap } from "./../../../../subdomains/users/mappers/userMap";
+import { IUserRepository } from "../../../../modules/user/repositories/user";
+import { User } from "./../../../../modules/user/domain/user";
+import { UserEmail } from "../../../../modules/user/domain/userEmail";
+import { UserId } from "../../../../modules/user/domain/userId";
+import { UserMap } from "./../../../../modules/user/mappers/userMap";
 import { UserModel } from "../models/tenant/user";
 
 const modelToDomain = (model: UserModel): User => {

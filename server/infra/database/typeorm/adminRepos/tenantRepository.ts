@@ -1,8 +1,8 @@
 import { Connection, Repository } from "typeorm";
-import { ITenantRepository } from "../../../../subdomains/tenants/repos/tenantRepository";
-import { Tenant } from "../../../../subdomains/tenants/domain/tenant";
-import { TenantId } from "../../../../subdomains/tenants/domain/tenantId";
-import { TenantMap } from "../../../../subdomains/tenants/mappers/tenantMapper";
+import { ITenantRepository } from "../../../../modules/tenant/repos/tenantRepository";
+import { Tenant } from "../../../../modules/tenant/domain/tenant";
+import { TenantId } from "../../../../modules/tenant/domain/tenantId";
+import { TenantMap } from "../../../../modules/tenant/mappers/tenantMapper";
 import { TenantModel } from "../models/admin/tenant";
 
 export class TenantRepository implements ITenantRepository {

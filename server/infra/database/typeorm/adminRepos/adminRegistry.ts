@@ -1,7 +1,7 @@
 import { Connection } from "typeorm";
-import { ITenantRepository } from "../../../../subdomains/tenants/repos/tenantRepository";
-import { Tenant } from "../../../../subdomains/tenants/domain/tenant";
-import { TenantMap } from "./../../../../subdomains/tenants/mappers/tenantMapper";
+import { ITenantRepository } from "../../../../modules/tenant/repos/tenantRepository";
+import { Tenant } from "../../../../modules/tenant/domain/tenant";
+import { TenantMap } from "./../../../../modules/tenant/mappers/tenantMapper";
 import { TenantRepository } from "./tenantRepository";
 
 export class AdminRegistry {
