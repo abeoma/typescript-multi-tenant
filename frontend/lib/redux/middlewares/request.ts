@@ -1,6 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import { get } from "lodash-es";
 
+const SUCCESS_CODE = 200;
+
 type RquestData = { [k in string]: unknown };
 
 type CommonArgs = {
@@ -109,7 +111,7 @@ export const executeRequest = async (
   fetchOptions: RequestInit
 ): Promise<string | Record<string, unknown>> => {
   const res = await execute(args, fetchOptions);
-  if (res.status !== args.successCode) {
+  if (res.status !== SUCCESS_CODE) {
     throw new HttpStatusError(`Http status=${res.status}`, res);
   }
 
