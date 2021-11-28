@@ -1,10 +1,10 @@
 import { Connection, EntityManager, Repository } from "typeorm";
-import { IUserRepository } from "../../../../subdomains/users/repositories/user";
-import { User } from "./../../../../subdomains/users/domain/user";
-import { UserEmail } from "../../../../subdomains/users/domain/userEmail";
-import { UserId } from "../../../../subdomains/users/domain/userId";
-import { UserMap } from "./../../../../subdomains/users/mappers/userMap";
+import { User } from "./../../../../modules/user/domain/user";
+import { UserEmail } from "../../../../modules/user/domain/userEmail";
+import { UserId } from "../../../../modules/user/domain/userId";
+import { UserMap } from "./../../../../modules/user/mappers/userMap";
 import { UserModel } from "../models/tenant/user";
+import { UserRepository } from "../../../../modules/user/repositories/user.repository";
 
 const modelToDomain = (model: UserModel): User => {
   return UserMap.toDomain({
@@ -16,7 +16,7 @@ const modelToDomain = (model: UserModel): User => {
   });
 };
 
-export class UserRepository implements IUserRepository {
+export class UserRepositoryImpl implements UserRepository {
   private repo: Repository<UserModel>;
 
   constructor(conn: Connection) {
@@ -38,7 +38,7 @@ export class UserRepository implements IUserRepository {
     return models.map((model) => UserMap.toDomain(model));
   }
 
-  async save(user: User, transactionManager: EntityManager): Promise<void> {
+  async save(user: User, transactionManager?: EntityManager): Promise<void> {
     const data = UserMap.toPersistence(user);
     const model = this.repo.create(data);
     if (transactionManager) {

@@ -1,28 +1,16 @@
-import {
-  UserController,
-  validators,
-} from "./../../../../subdomains/users/controllers/user";
 import express from "express";
+import userController from "./../../../../modules/user/controllers/user.controller";
 
 // eslint-disable-next-line new-cap
 const userRouter = express.Router();
 
-userRouter.get("/", (req: express.Request, res: express.Response) =>
-  new UserController().getUsers(req, res)
-);
+userRouter
+  .route("/")
+  .post(userController.validation.createUser, userController.createUser)
+  .get(userController.getUsers);
 
-userRouter.post(
-  "/",
-  validators.createUser,
-  (req: express.Request, res: express.Response, next: express.NextFunction) =>
-    new UserController().createUser(req, res, next)
-);
-
-userRouter.put(
-  "/:id",
-  validators.updateUser,
-  (req: express.Request, res: express.Response, next: express.NextFunction) =>
-    new UserController().updateUser(req, res, next)
-);
+userRouter
+  .route("/:id")
+  .put(userController.validation.updateUser, userController.updateUser);
 
 export { userRouter };

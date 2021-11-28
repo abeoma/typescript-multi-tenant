@@ -4,9 +4,15 @@ import { userRouter } from "./user";
 // eslint-disable-next-line new-cap
 const appRouter = express.Router();
 
-appRouter.get("/", (req, res) => {
-  return res.send("This is the app.");
+const defaultRoutes = [
+  {
+    path: "/users",
+    router: userRouter,
+  },
+];
+
+defaultRoutes.forEach((route) => {
+  appRouter.use(route.path, route.router);
 });
-appRouter.use("/users", userRouter);
 
 export { appRouter };

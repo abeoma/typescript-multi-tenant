@@ -1,18 +1,18 @@
 import { AppException } from "../../../shared/core/AppException";
-import { IRegistry } from "../../../infra/database/interfaces/registry";
+import { Registry } from "../../../infra/database/interfaces/registry";
 import { User } from "../domain/user";
 import { UserDTO } from "../../../dtos";
 import { UserEmail } from "./../domain/userEmail";
-import { UserFactory } from "./../domain/factories/user";
+import { UserFactory } from "./../domain/factories/user.factory";
 import { UserId } from "../domain/userId";
 import { UserMap } from "./../mappers/userMap";
 import assert from "assert";
 import generator from "generate-password";
 
 export class UserApplicationService {
-  private reg: IRegistry;
+  private reg: Registry;
 
-  constructor(reg: IRegistry) {
+  constructor(reg: Registry) {
     this.reg = reg;
   }
 
