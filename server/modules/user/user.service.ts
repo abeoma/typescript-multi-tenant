@@ -1,11 +1,11 @@
-import { AppException } from "../../../shared/core/AppException";
-import { Registry } from "../../../infra/database/interfaces/registry";
-import { User } from "../domain/user";
-import { UserDTO } from "../../../dtos";
-import { UserEmail } from "./../domain/userEmail";
-import { UserFactory } from "./../domain/factories/user.factory";
-import { UserId } from "../domain/userId";
-import { UserMap } from "./../mappers/userMap";
+import { AppException } from "../../shared/core/AppException";
+import { Registry } from "../../infra/database/interfaces/registry";
+import { User } from "./domain/user";
+import { UserDTO } from "../../dtos";
+import { UserEmail } from "./domain/userEmail";
+import { UserFactory } from "./domain/factories/user.factory";
+import { UserId } from "./domain/userId";
+import { UserMap } from "./user.map";
 import assert from "assert";
 import generator from "generate-password";
 

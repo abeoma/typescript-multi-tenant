@@ -1,5 +1,5 @@
 import express from "express";
-import userController from "./../../../../modules/user/controllers/user.controller";
+import userController from "./../../../../modules/user/user.controller";
 
 // eslint-disable-next-line new-cap
 const userRouter = express.Router();

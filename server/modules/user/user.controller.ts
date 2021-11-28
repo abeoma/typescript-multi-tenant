@@ -1,10 +1,10 @@
-import { UserApplicationService } from "./../services/user.service";
+import express, { RequestHandler } from "express";
+import { UserApplicationService } from "./user.service";
 import { body } from "express-validator";
-import { catchAsync } from "./../../../infra/https/utils/catchAsync";
-import { execValidation } from "./../../../infra/https/middlewares/validator";
-import express from "express";
+import { catchAsync } from "./../../infra/https/utils/catchAsync";
+import { execValidation } from "./../../infra/https/middlewares/validator";
 
-const validation: Record<string, unknown[]> = {};
+const validation: Record<string, RequestHandler[]> = {};
 
 validation.createUser = [
   body("email").isEmail(),

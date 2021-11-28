@@ -2,9 +2,9 @@ import { Connection, EntityManager, Repository } from "typeorm";
 import { User } from "./../../../../modules/user/domain/user";
 import { UserEmail } from "../../../../modules/user/domain/userEmail";
 import { UserId } from "../../../../modules/user/domain/userId";
-import { UserMap } from "./../../../../modules/user/mappers/userMap";
+import { UserMap } from "../../../../modules/user/user.map";
 import { UserModel } from "../models/tenant/user";
-import { UserRepository } from "../../../../modules/user/repositories/user.repository";
+import { UserRepository } from "../../../../modules/user/user.repository";
 
 const modelToDomain = (model: UserModel): User => {
   return UserMap.toDomain({

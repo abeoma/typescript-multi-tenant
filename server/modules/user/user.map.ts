@@ -1,9 +1,9 @@
-import { Mapper } from "../../../infra/Mapper";
-import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
-import { User } from "../domain/user";
-import { UserDTO } from "../../../dtos";
-import { UserEmail } from "../domain/userEmail";
-import { UserPassword } from "../domain/userPassword";
+import { Mapper } from "../../infra/Mapper";
+import { UniqueEntityID } from "../../shared/domain/UniqueEntityID";
+import { User } from "./domain/user";
+import { UserDTO } from "../../dtos";
+import { UserEmail } from "./domain/userEmail";
+import { UserPassword } from "./domain/userPassword";
 
 type Props = {
   id: string;
