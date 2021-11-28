@@ -12,5 +12,6 @@ declare module "express-serve-static-core" {
       payload?: unknown;
       meta?: Record<Omit<string, "status">, unknown>;
     }) => Response;
+    ng: (errcode: string) => Response;
   }
 }
