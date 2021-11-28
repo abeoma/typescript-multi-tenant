@@ -4,6 +4,13 @@ import { catchAsync } from "./../../../infra/https/utils/catchAsync";
 import { execValidation } from "./../../../infra/https/middlewares/validator";
 import express from "express";
 
+const validation: Record<string, unknown[]> = {};
+
+validation.createUser = [
+  body("email").isEmail(),
+  body("firstName").exists(),
+  body("lastName").exists(),
+];
 const createUser = catchAsync(
   async (
     req: express.Request,
@@ -34,6 +41,11 @@ const getUsers = catchAsync(
   }
 );
 
+validation.updateUser = [
+  body("email").isEmail(),
+  body("firstName").exists(),
+  body("lastName").exists(),
+];
 const updateUser = catchAsync(
   async (
     req: express.Request,
@@ -52,18 +64,5 @@ const updateUser = catchAsync(
     return res.ok();
   }
 );
-
-const validation = {
-  createUser: [
-    body("email").isEmail(),
-    body("firstName").exists(),
-    body("lastName").exists(),
-  ],
-  updateUser: [
-    body("email").isEmail(),
-    body("firstName").exists(),
-    body("lastName").exists(),
-  ],
-};
 
 export default { createUser, getUsers, updateUser, validation };
