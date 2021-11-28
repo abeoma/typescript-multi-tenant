@@ -1,10 +1,13 @@
 import { Connection, EntityManager, Repository } from "typeorm";
+import {
+  ListArgs,
+  UserRepository,
+} from "../../../../modules/user/user.repository";
 import { User } from "./../../../../modules/user/domain/user";
 import { UserEmail } from "../../../../modules/user/domain/userEmail";
 import { UserId } from "../../../../modules/user/domain/userId";
 import { UserMap } from "../../../../modules/user/user.map";
 import { UserModel } from "../models/tenant/user";
-import { UserRepository } from "../../../../modules/user/user.repository";
 
 const modelToDomain = (model: UserModel): User => {
   return UserMap.toDomain({
@@ -33,8 +36,8 @@ export class UserRepositoryImpl implements UserRepository {
     return model ? modelToDomain(model) : null;
   }
 
-  async fetchList(): Promise<User[]> {
-    const models = await this.repo.find();
+  async fetchList({ offset = 0, limit }: ListArgs): Promise<User[]> {
+    const models = await this.repo.find({ skip: offset, take: limit });
     return models.map((model) => UserMap.toDomain(model));
   }
 

@@ -1,17 +1,20 @@
+import { body, param } from "express-validator";
 import express, { RequestHandler } from "express";
 import { UserApplicationService } from "./user.service";
-import { body } from "express-validator";
 import { catchAsync } from "./../../infra/https/utils/catchAsync";
 import { execValidation } from "./../../infra/https/middlewares/validator";
+
+const NUM_PER_PAGE = 20;
 
 const validation: Record<string, RequestHandler[]> = {};
 
 validation.createUser = [
+  body("id").optional(),
   body("email").isEmail(),
   body("firstName").exists(),
   body("lastName").exists(),
 ];
-const createUser = catchAsync(
+export const createUser = catchAsync(
   async (
     req: express.Request,
     res: express.Response
@@ -30,28 +33,38 @@ const createUser = catchAsync(
   }
 );
 
-const getUsers = catchAsync(
-  async (
-    req: express.Request,
-    res: express.Response
-  ): Promise<express.Response> => {
-    const reg = req.services.registry;
-    const users = await new UserApplicationService(reg).fetchUsers();
-    return res.ok({ payload: users });
-  }
-);
-
-validation.updateUser = [
-  body("email").isEmail(),
-  body("firstName").exists(),
-  body("lastName").exists(),
-];
-const updateUser = catchAsync(
+validation.getUsers = [body("page").isInt().optional()];
+export const getUsers = catchAsync(
   async (
     req: express.Request,
     res: express.Response
   ): Promise<express.Response> => {
     execValidation(req, res);
+
+    const { page = 1 } = req.body;
+    const offset = (page - 1) * NUM_PER_PAGE;
+    const reg = req.services.registry;
+    const users = await new UserApplicationService(reg).fetchUsers({
+      offset,
+      limit: NUM_PER_PAGE,
+    });
+    return res.ok({ payload: users });
+  }
+);
+
+validation.updateUser = [
+  param("id"),
+  body("email").isEmail(),
+  body("firstName").exists(),
+  body("lastName").exists(),
+];
+export const updateUser = catchAsync(
+  async (
+    req: express.Request,
+    res: express.Response
+  ): Promise<express.Response> => {
+    execValidation(req, res);
+
     const { id } = req.params;
     const { email, firstName, lastName } = req.body;
     const reg = req.services.registry;
@@ -65,4 +78,4 @@ const updateUser = catchAsync(
   }
 );
 
-export default { createUser, getUsers, updateUser, validation };
+export { validation };

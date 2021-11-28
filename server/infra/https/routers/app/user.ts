@@ -1,16 +1,19 @@
+import {
+  createUser,
+  getUsers,
+  updateUser,
+  validation,
+} from "./../../../../modules/user/user.controller";
 import express from "express";
-import userController from "./../../../../modules/user/user.controller";
 
 // eslint-disable-next-line new-cap
 const userRouter = express.Router();
 
 userRouter
   .route("/")
-  .post(userController.validation.createUser, userController.createUser)
-  .get(userController.getUsers);
+  .post(validation.createUser, createUser)
+  .get(validation.getUsers, getUsers);
 
-userRouter
-  .route("/:id")
-  .put(userController.validation.updateUser, userController.updateUser);
+userRouter.route("/:id").put(validation.updateUser, updateUser);
 
 export { userRouter };

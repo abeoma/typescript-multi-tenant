@@ -16,8 +16,11 @@ export class UserApplicationService {
     this.reg = reg;
   }
 
-  async fetchUsers(): Promise<UserDTO[]> {
-    const users: User[] = await this.reg.userRepository().fetchList();
+  async fetchUsers(args: {
+    offset: number;
+    limit: number;
+  }): Promise<UserDTO[]> {
+    const users: User[] = await this.reg.userRepository().fetchList(args);
     return users.map((u) => UserMap.toDTO(u));
   }
 
