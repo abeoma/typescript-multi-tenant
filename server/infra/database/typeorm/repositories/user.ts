@@ -38,7 +38,7 @@ export class UserRepositoryImpl implements UserRepository {
     return models.map((model) => UserMap.toDomain(model));
   }
 
-  async save(user: User, transactionManager: EntityManager): Promise<void> {
+  async save(user: User, transactionManager?: EntityManager): Promise<void> {
     const data = UserMap.toPersistence(user);
     const model = this.repo.create(data);
     if (transactionManager) {
