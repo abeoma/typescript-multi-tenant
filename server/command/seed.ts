@@ -1,8 +1,8 @@
-import { UserModel } from "../infra/database/typeorm/models/tenant/user";
-import { Connection } from "typeorm";
 import { choice, range } from "../lib/helpers";
-import { v4 as uuidv4 } from "uuid";
+import { Connection } from "typeorm";
+import { UserModel } from "../infra/database/typeorm/models/tenant/user";
 import faker from "faker";
+import { v4 as uuidv4 } from "uuid";
 
 export class SeedImporter {
   private conn: Connection;
@@ -16,6 +16,7 @@ export class SeedImporter {
   }
 
   private async importUsers() {
+    // eslint-disable-next-line no-magic-numbers
     const users = range(50).map((_) => {
       const firstName = faker.name.firstName();
       const lastName = faker.name.lastName();

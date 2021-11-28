@@ -1,10 +1,10 @@
-import yargs, { Arguments, Options } from "yargs";
 import {
   createTenant,
   migrateAdmin,
   resetAll,
   setupDevTenant,
 } from "./migrate";
+import yargs, { Arguments, Options } from "yargs";
 import { assertIsString } from "@barasu/common/asserts";
 
 type Command = {
@@ -19,7 +19,7 @@ const commands: Command[] = [
     name: "migrate-all",
     handler: async () => {
       await migrateAdmin();
-      // async migrateTenants();
+      // ADD: async migrateTenants();
     },
   },
   {
@@ -36,7 +36,12 @@ const commands: Command[] = [
       createTenant({ id: args.tenantId });
     },
   },
-  { name: "reset-all", handler: async () => await resetAll() },
+  {
+    name: "reset-all",
+    handler: async () => {
+      await resetAll();
+    },
+  },
   {
     name: "setup-dev-tenant",
     options: {
@@ -53,8 +58,11 @@ const commands: Command[] = [
   },
 ];
 
+// eslint-disable-next-line no-magic-numbers
 const parser = yargs.demandCommand(1).help();
 commands.forEach(({ name, description = "", options: option = {}, handler }) =>
   yargs.command(name, description, option, handler)
 );
+
+// eslint-disable-next-line no-unused-expressions
 parser.argv;

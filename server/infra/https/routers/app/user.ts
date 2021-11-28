@@ -4,9 +4,12 @@ import {
 } from "./../../../../subdomains/users/controllers/user";
 import express from "express";
 
+// eslint-disable-next-line new-cap
 const userRouter = express.Router();
 
-userRouter.get("/", (req, res) => new UserController().getUsers(req, res));
+userRouter.get("/", (req: express.Request, res: express.Response) =>
+  new UserController().getUsers(req, res)
+);
 
 userRouter.post(
   "/",

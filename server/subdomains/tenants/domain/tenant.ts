@@ -1,9 +1,10 @@
+import { Entity } from "../../../shared/domain/Entity";
 import { TenantId } from "./tenantId";
 import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
-import { Entity } from "../../../shared/domain/Entity";
 
 export class Tenant extends Entity<null> {
   get id(): TenantId {
+    // eslint-disable-next-line no-underscore-dangle
     return this._id;
   }
 

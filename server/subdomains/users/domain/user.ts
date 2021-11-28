@@ -1,8 +1,8 @@
+import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
+import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
 import { UserEmail } from "./userEmail";
 import { UserId } from "./userId";
 import { UserPassword } from "./userPassword";
-import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
-import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 
 interface UserProps {
   email: UserEmail;
@@ -14,7 +14,8 @@ interface UserProps {
 }
 
 export class User extends AggregateRoot<UserProps> {
-  get id(): UserId {
+  get _id(): UserId {
+    // eslint-disable-next-line no-underscore-dangle
     return this._id;
   }
 
@@ -48,10 +49,6 @@ export class User extends AggregateRoot<UserProps> {
 
   public deactivate(): void {
     this.props.isActive = false;
-  }
-
-  private constructor(props: UserProps, id: UniqueEntityID) {
-    super(props, id);
   }
 
   public static create(props: UserProps, id: UniqueEntityID): User {

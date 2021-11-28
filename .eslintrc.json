@@ -4,7 +4,7 @@
     "es2021": true
   },
   "extends": [
-    "eslint:recommended",
+    "eslint:all",
     "prettier",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -20,8 +20,16 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "comma-dangle": "off",
+    "func-names": ["error", "as-needed"],
     "quotes": ["error", "double"],
+    "id-length": "off",
+    "max-statements": "off",
+    "no-magic-numbers": "warn",
+    "no-ternary": "off",
     "no-unused-vars": "off",
+    "one-var": "off",
+    "sort-keys": "off",
+    "sort-vars": "off",
     "import/prefer-default-export": "off",
     "@typescript-eslint/consistent-type-assertions": [
       "error",

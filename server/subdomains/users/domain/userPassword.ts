@@ -1,7 +1,7 @@
 import { ValueObject } from "../../../shared/domain/ValueObject";
+import assert from "assert";
 import { pbkdf2 } from "crypto";
 import { v4 as uuidv4 } from "uuid";
-import assert from "assert";
 
 const config = {
   hashBytes: 32,
@@ -15,7 +15,24 @@ type UserPasswordProps = {
   hashed: boolean;
 };
 
+const encrypt = (plainText: string, salt: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    pbkdf2(
+      plainText,
+      salt,
+      config.iterations,
+      config.hashBytes,
+      config.digest,
+      (err, hash) => {
+        if (err) return reject(err);
+        return resolve(hash.toString());
+      }
+    );
+  });
+};
+
 export class UserPassword extends ValueObject<UserPasswordProps> {
+  // eslint-disable-next-line no-magic-numbers
   public static minLength = 8;
 
   get value(): string {
@@ -25,10 +42,6 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
   get salt(): string {
     assert(this.props.salt);
     return this.props.salt;
-  }
-
-  private constructor(props: UserPasswordProps) {
-    super(props);
   }
 
   private static isAppropriateLength(password: string): boolean {
@@ -64,20 +77,4 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
       hashed,
     });
   }
-}
-
-function encrypt(plainText: string, salt: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    pbkdf2(
-      plainText,
-      salt,
-      config.iterations,
-      config.hashBytes,
-      config.digest,
-      (err, hash) => {
-        if (err) return reject(err);
-        return resolve(hash.toString());
-      }
-    );
-  });
 }

@@ -1,6 +1,6 @@
 import { Mapper } from "../../../infra/Mapper";
-import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
 import { Tenant } from "../domain/tenant";
+import { UniqueEntityID } from "../../../shared/domain/UniqueEntityID";
 
 export class TenantMap implements Mapper<Tenant> {
   public static toDomain(raw: { id: string }): Tenant {

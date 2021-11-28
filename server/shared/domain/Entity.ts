@@ -1,20 +1,22 @@
+/* eslint-disable no-underscore-dangle */
 import { UniqueEntityID } from "./UniqueEntityID";
-
-const isEntity = (v: unknown): v is Entity<unknown> => {
-  return v instanceof Entity;
-};
 
 export abstract class Entity<T> {
   protected readonly _id: UniqueEntityID;
+
   public readonly props: T;
 
+  static isEntity(v: unknown): v is Entity<unknown> {
+    return v instanceof Entity;
+  }
+
   constructor(props: T, id?: UniqueEntityID) {
-    this._id = id ? id : new UniqueEntityID();
+    this._id = id || new UniqueEntityID();
     this.props = props;
   }
 
   public equals(object?: Entity<T>): boolean {
-    if (object == null || object == undefined) {
+    if (object === null || typeof object === "undefined") {
       return false;
     }
 
@@ -22,7 +24,7 @@ export abstract class Entity<T> {
       return true;
     }
 
-    if (!isEntity(object)) {
+    if (!Entity.isEntity(object)) {
       return false;
     }
 

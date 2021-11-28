@@ -1,12 +1,16 @@
+/* eslint-disable no-magic-numbers */
 export abstract class WatchedList<T> {
   public currentItems: T[];
+
   private initial: T[];
+
   private new: T[];
+
   private removed: T[];
 
   constructor(initialItems?: T[]) {
-    this.currentItems = initialItems ? initialItems : [];
-    this.initial = initialItems ? initialItems : [];
+    this.currentItems = initialItems || [];
+    this.initial = initialItems || [];
     this.new = [];
     this.removed = [];
   }

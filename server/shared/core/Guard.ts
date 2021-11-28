@@ -66,14 +66,13 @@ export class Guard {
     argument: unknown,
     argumentName: string
   ): IGuardResult {
-    if (argument === null || argument === undefined) {
+    if (argument === null || typeof argument === "undefined") {
       return {
         succeeded: false,
         message: `${argumentName} is null or undefined`,
       };
-    } else {
-      return { succeeded: true };
     }
+    return { succeeded: true };
   }
 
   public static againstNullOrUndefinedBulk(
@@ -104,42 +103,50 @@ export class Guard {
 
     if (isValid) {
       return { succeeded: true };
-    } else {
-      return {
-        succeeded: false,
-        message: `${argumentName} isn't oneOf the correct types in ${JSON.stringify(
-          validValues
-        )}. Got "${value}".`,
-      };
     }
+    return {
+      succeeded: false,
+      message: `${argumentName} isn't oneOf the correct types in ${JSON.stringify(
+        validValues
+      )}. Got "${value}".`,
+    };
   }
 
-  public static inRange(
-    num: number,
-    min: number,
-    max: number,
-    argumentName: string
-  ): IGuardResult {
+  public static inRange({
+    num,
+    min,
+    max,
+    argumentName,
+  }: {
+    num: number;
+    min: number;
+    max: number;
+    argumentName: string;
+  }): IGuardResult {
     const isInRange = num >= min && num <= max;
     if (!isInRange) {
       return {
         succeeded: false,
         message: `${argumentName} is not within range ${min} to ${max}.`,
       };
-    } else {
-      return { succeeded: true };
     }
+    return { succeeded: true };
   }
 
-  public static allInRange(
-    numbers: number[],
-    min: number,
-    max: number,
-    argumentName: string
-  ): IGuardResult {
+  public static allInRange({
+    numbers,
+    min,
+    max,
+    argumentName,
+  }: {
+    numbers: number[];
+    min: number;
+    max: number;
+    argumentName: string;
+  }): IGuardResult {
     let failingResult: IGuardResult | null = null;
     for (const num of numbers) {
-      const numIsInRangeResult = this.inRange(num, min, max, argumentName);
+      const numIsInRangeResult = this.inRange({ num, min, max, argumentName });
       if (!numIsInRangeResult.succeeded) failingResult = numIsInRangeResult;
     }
 
@@ -148,8 +155,7 @@ export class Guard {
         succeeded: false,
         message: `${argumentName} is not within the range.`,
       };
-    } else {
-      return { succeeded: true };
     }
+    return { succeeded: true };
   }
 }

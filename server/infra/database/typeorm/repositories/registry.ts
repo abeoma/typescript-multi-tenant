@@ -4,6 +4,7 @@ import { UserRepository } from "./user";
 
 export class TypeOrmRegistry implements IRegistry {
   private conn: Connection;
+
   constructor(conn: Connection) {
     this.conn = conn;
   }

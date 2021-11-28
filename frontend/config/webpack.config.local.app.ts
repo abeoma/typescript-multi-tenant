@@ -1,6 +1,6 @@
-import webpack from "webpack";
-import { merge } from "webpack-merge";
 import baseConfig from "./webpack.config";
+import { merge } from "webpack-merge";
+import webpack from "webpack";
 
 const tenantId = "barasu-dev";
 

@@ -4,7 +4,7 @@ export class Identifier<T> {
   }
 
   equals(id?: Identifier<T>): boolean {
-    if (id === null || id === undefined) {
+    if (id === null || typeof id === "undefined") {
       return false;
     }
     if (!(id instanceof this.constructor)) {
