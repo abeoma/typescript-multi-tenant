@@ -14,7 +14,7 @@ interface UserProps {
 }
 
 export class User extends AggregateRoot<UserProps> {
-  get _id(): UserId {
+  get id(): UserId {
     // eslint-disable-next-line no-underscore-dangle
     return this._id;
   }
