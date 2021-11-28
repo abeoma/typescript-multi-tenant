@@ -2,12 +2,14 @@ import "reflect-metadata";
 import { appRouter } from "./infra/https/routers/app";
 import { errorHandler } from "./infra/https/middlewares/errorHandler";
 import express from "express";
+import { responseHandler } from "./infra/https/middlewares/responseHandler";
 import { tenantDispatcher } from "./infra/https/middlewares/tenantDispatcher";
 
 const app = express();
 const port = 5005;
 
 app.use(express.json());
+app.use(responseHandler);
 app.use(tenantDispatcher);
 app.use("/api", appRouter);
 
