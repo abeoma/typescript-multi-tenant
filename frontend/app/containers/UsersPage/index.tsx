@@ -104,6 +104,8 @@ const UsersPage = () => {
         />
       ) : (
         <UserNewModal
+          // Set key to reset form values when reopen modal
+          key={String(new Date())}
           open={openModal}
           handleClose={handleClose}
           onSubmit={(v) => dispatch(usersSagaActionCreator.onSaveNew(v))}
